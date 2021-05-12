@@ -82,7 +82,6 @@ const Register = ({ history }) => {
         message: "",
       });
     } else {
-      console.log(values);
       data.append(
         "old_img",
         "https://nintube.s3-sa-east-1.amazonaws.com/images/default.png"

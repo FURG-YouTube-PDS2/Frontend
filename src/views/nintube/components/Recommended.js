@@ -129,12 +129,11 @@ const videos = [
   },
 ];
 
-const StackVideo = ({ user }) => {
+const StackVideo = ({ user, video_id }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     videos: [],
     fetched: false,
-    videos: [],
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -149,6 +148,7 @@ const StackVideo = ({ user }) => {
       getRecs(data)
         .then(function (data) {
           setState({ ...state, fetched: true, videos: data });
+          video_id(data[0].id);
         })
         .catch((err) => {
           setState({ ...state, fetched: true });
@@ -237,4 +237,7 @@ const StackVideo = ({ user }) => {
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(StackVideo));

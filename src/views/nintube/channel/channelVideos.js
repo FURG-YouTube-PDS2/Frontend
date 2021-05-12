@@ -42,10 +42,17 @@ const ChannelVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        user_id: id !== "0" ? id : "",
-        token: user.token,
-      };
+      if (user !== null && user !== "") {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: "",
+        };
+      }
       channelGetVideos(data)
         .then(function (data) {
           setState({ ...state, fetched: true, videos: data });

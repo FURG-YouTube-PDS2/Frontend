@@ -47,10 +47,17 @@ const Channel = ({ user }) => {
   });
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        user_id: id !== "0" ? id : "",
-        token: user.token,
-      };
+      if (user !== null && user !== "") {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: "",
+        };
+      }
       // changeContent("video");
       channelData(data)
         .then(function (data) {
@@ -205,7 +212,7 @@ const Channel = ({ user }) => {
                     </div>
                   </div>
                 </CCol>
-                <CCol sm="3" sm="3" style={{ display: "flex" }}>
+                <CCol sm="3" style={{ display: "flex" }}>
                   <div
                     style={{ width: "100%", height: "50%", marginTop: "auto" }}
                   >
@@ -312,8 +319,16 @@ const Channel = ({ user }) => {
         </div>
       )}
       {/* {state.content === 1 ? <h1>Inicio</h1> : null} */}
-      {state.content === 2 ? <ChannelVideos /> : null}
-      {state.content === 3 ? <AllPlaylists /> : null}
+      <div hidden={state.content !== 2}>
+        {" "}
+        <ChannelVideos />{" "}
+      </div>
+      <div hidden={state.content !== 3}>
+        {" "}
+        <AllPlaylists />
+      </div>
+      {/* {state.content === 2 ? <ChannelVideos /> : null}
+      {state.content === 3 ? <AllPlaylists /> : null} */}
       {/* {state.content === 4 ? <h1>Sobre</h1> : null} */}
       {state.content === 5 ? (
         <ChannelSearch search={state.search} channel_id={id} />

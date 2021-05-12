@@ -45,6 +45,15 @@ const UploadEdit = ({ user, history }) => {
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
 
+    // const options = {
+    //   onUploadProgess: (progressEvent) => {
+    //     const { loaded, total } = progressEvent;
+    //     let percent = Math.floor((loaded * 100) / total);
+    //     // if (percent < 100) {
+    //     //   setState({ ...state, upload_percent: percent });
+    //     // }
+    //   },
+    // };
   };
 
   const Edit = async () => {

@@ -63,6 +63,16 @@ const Upload = ({ user, history }) => {
       video_name: files[0].path,
       video_url: URL.createObjectURL(files[0]),
     });
+
+    // const options = {
+    //   onUploadProgess: (progressEvent) => {
+    //     const { loaded, total } = progressEvent;
+    //     let percent = Math.floor((loaded * 100) / total);
+    //     // if (percent < 100) {
+    //     //   setState({ ...state, upload_percent: percent });
+    //     // }
+    //   },
+    // };
   };
   const SingleValue = ({ children, ...props }) => (
     <components.SingleValue {...props}>{children}</components.SingleValue>

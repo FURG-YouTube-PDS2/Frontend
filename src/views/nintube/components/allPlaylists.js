@@ -42,10 +42,18 @@ const AllPlaylists = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        id_target: id !== "0" && id !== undefined ? id : "",
-        token: user.token,
-      };
+      if (user !== null && user !== "") {
+        var data = {
+          id_target: id !== "0" && id !== undefined ? id : "",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          id_target: id !== "0" && id !== undefined ? id : "",
+          token: "",
+        };
+      }
+
       getPlaylists(data)
         .then(function (data) {
           setState({ ...state, fetched: true, videos: data });

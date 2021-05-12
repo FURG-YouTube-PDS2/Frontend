@@ -47,6 +47,7 @@ const Player = ({ url = "" }) => {
     muted: false,
     video_id: id,
     hidden: false,
+    videos_id: [],
   });
   const [loaded, setLoaded] = useState(0);
   const [seeking, setSeeking] = useState(false);
@@ -274,9 +275,24 @@ const Player = ({ url = "" }) => {
     setState({ ...state, playbackRate: parseFloat(e.target.value) });
   };
 
-  const handleProgress = (state) => {
+  const handleProgress = (stat) => {
     if (!seeking) {
-      setPlayed(state.played);
+      setPlayed(stat.played);
+      var play = stat.played;
+      if (play === 1) {
+        if (playlist.index_select !== playlist.videos.length - 1) {
+          console.log("entro2");
+          console.log(playlist.videos);
+          console.log(playlist.videos[playlist.index_select]);
+          history.push(
+            "/viewPlaylist/" +
+              playlistid +
+              "/" +
+              playlist.videos[playlist.index_select + 1].video_id
+          );
+          window.location.reload();
+        }
+      }
     }
   };
 
@@ -329,7 +345,7 @@ const Player = ({ url = "" }) => {
         .then(function (data) {
           var select = "";
           data.videos.map((video, index) => {
-            if (video.id === id) {
+            if (video.video_id === id) {
               select = index;
             }
           });
@@ -511,29 +527,30 @@ const Player = ({ url = "" }) => {
             ></div>
             <div
               style={{
+                width: "30%",
                 marginLeft: "auto",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                //color: "white",
               }}
             >
               <CButton onClick={handleClickFullscreen}>Fullscreen</CButton>
-              Velocidade
-              <CSelect
-                style={{ width: "30%" }}
-                onChange={(e) => handleSetPlaybackRate(e)}
-              >
-                <option value="0.25">0.25</option>
-                <option value="0.5">0.5</option>
-                <option value="0.75">0.75</option>
-                <option value="1" selected>
-                  1
-                </option>
-                <option value="1.25">1.25</option>
-                <option value="1.5">1.5</option>
-                <option value="1.75">1.75</option>
-                <option value="2">2</option>
-              </CSelect>
+              <span style={{ marginRight: "1%" }}> Velocidade </span>
+              <div>
+                <CSelect onChange={(e) => handleSetPlaybackRate(e)}>
+                  <option value="0.25">0.25</option>
+                  <option value="0.5">0.5</option>
+                  <option value="0.75">0.75</option>
+                  <option value="1" selected>
+                    1
+                  </option>
+                  <option value="1.25">1.25</option>
+                  <option value="1.5">1.5</option>
+                  <option value="1.75">1.75</option>
+                  <option value="2">2</option>
+                </CSelect>
+              </div>
             </div>
           </div>
         </div>

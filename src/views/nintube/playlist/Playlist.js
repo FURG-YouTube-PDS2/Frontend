@@ -9,6 +9,7 @@ import * as actions from "../../../store/actions";
 import PlaylistVideos from "../components/playlistVideos";
 //Style
 //API
+import { alert } from "../../../util/alertApi";
 
 const Playlist = ({ user, history }) => {
   const [state, setState] = useState({
@@ -16,7 +17,8 @@ const Playlist = ({ user, history }) => {
   });
   useEffect(() => {
     if (!state.fetched) {
-      if (!user) {
+      console.log(user);
+      if (user === null || user === "") {
         alert(
           "Houve um problema",
           "Você não está logado para realizar essa ação por favor realize o login.",
@@ -38,12 +40,8 @@ const Playlist = ({ user, history }) => {
       }
       setState({ ...state, fetched: true });
     }
-  }, [history, state, user]);
-  return (
-    <div>
-      <PlaylistVideos/>
-    </div>
-  );
+  }, []);
+  return <div>{user !== null && user !== "" && <PlaylistVideos />}</div>;
 };
 
 const mapStateToProps = (state) => ({ user: state.user });

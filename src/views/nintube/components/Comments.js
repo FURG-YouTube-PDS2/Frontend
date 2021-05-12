@@ -468,7 +468,7 @@ const Comments = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      if (!user.token) {
+      if (!user) {
         var req = {
           name: "default",
         };
@@ -490,7 +490,7 @@ const Comments = ({ user }) => {
         };
       }
 
-      getComment(data, user.token)
+      getComment(data)
         .then(function (data) {
           var listAux = Array();
           var today = new Date();

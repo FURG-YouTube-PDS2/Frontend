@@ -178,7 +178,9 @@ const PlaylistVideos = ({ user }) => {
   const handleClick = (target) => {
     var route = target.split("_");
 
-    history.push("/" + route[0] + "/" + route[1]);
+    route.length === 2
+      ? history.push("/" + route[0] + "/" + route[1])
+      : history.push("/" + route[0] + "/" + route[1] + "/" + route[2]);
   };
 
   const changePossition = (old_index, new_index, element) => {
@@ -290,13 +292,13 @@ const PlaylistVideos = ({ user }) => {
             </CCol>
           )}
           <CCol
-            name={"view_" + id}
+            name={"viewPlaylist_" + id + "_" + item.video_id}
             onClick={(e) => handleClick(e.target.getAttribute("name"))}
             md="10"
             style={{ cursor: "pointer", width: "100%" }}
           >
             <CCard
-              name={"view_" + id}
+              name={"viewPlaylist_" + id + "_" + item.video_id}
               id={"id_card_" + index}
               key={"key_card_" + index}
               style={{
@@ -305,9 +307,13 @@ const PlaylistVideos = ({ user }) => {
                 border: "2px solid #B3272C",
               }}
             >
-              <CCardBody name={"view_" + id} style={{ width: "100%" }} row>
+              <CCardBody
+                name={"viewPlaylist_" + id + "_" + item.video_id}
+                style={{ width: "100%" }}
+                row
+              >
                 <CImg
-                  name={"view_" + id}
+                  name={"viewPlaylist_" + id + "_" + item.video_id}
                   style={{
                     width: "125px",
                     height: "80px",
@@ -319,8 +325,11 @@ const PlaylistVideos = ({ user }) => {
                   //
                   src={item.thumb}
                 />
-                <span name={"view_" + id} row>
-                  <h5 name={"view_" + id} style={{}}>
+                <span name={"viewPlaylist_" + id + "_" + item.video_id} row>
+                  <h5
+                    name={"viewPlaylist_" + id + "_" + item.video_id}
+                    style={{}}
+                  >
                     {item.title}
                   </h5>
                   <span
@@ -362,28 +371,30 @@ const PlaylistVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = { token: user.token, playlist_id: id };
-      listPlaylist(data)
-        .then(function (data) {
-          setState({
-            ...state,
-            fetched: true,
-            playlist: data.data,
-            playlist_edit: data.data.name,
-            videos: data.videos,
-          });
-        })
-        .catch((err) => {
-          setState({ ...state, fetched: true });
-          alert("Houve um problema", "Por favor recarregue a pagina", [
-            {
-              label: "Recarregar",
-              onClick: () => {
-                window.location.reload();
+      if (user !== null && user !== "") {
+        var data = { token: user.token, playlist_id: id };
+        listPlaylist(data)
+          .then(function (data) {
+            setState({
+              ...state,
+              fetched: true,
+              playlist: data.data,
+              playlist_edit: data.data.name,
+              videos: data.videos,
+            });
+          })
+          .catch((err) => {
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
               },
-            },
-          ]);
-        });
+            ]);
+          });
+      }
       // setState({
       //   ...state,
       //   fetched: true,
@@ -435,7 +446,7 @@ const PlaylistVideos = ({ user }) => {
                   src={state.videos[0].thumb}
                   onClick={() =>
                     history.push(
-                      "/viewPlaylist/" + id + "/" + state.videos[0].id
+                      "/viewPlaylist/" + id + "/" + state.videos[0].video_id
                     )
                   }
                 />
