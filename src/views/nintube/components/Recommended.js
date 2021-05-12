@@ -151,7 +151,6 @@ const StackVideo = ({ user }) => {
           setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, fetched: true });
           alert(
             "Houve um problema nos recomendados",

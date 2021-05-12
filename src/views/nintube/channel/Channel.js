@@ -54,7 +54,6 @@ const Channel = ({ user }) => {
       // changeContent("video");
       channelData(data)
         .then(function (data) {
-          console.log(data);
           var channel = { ...state.channel };
           channel.nick = data.channel_nick;
           channel.avatar = data.channel_avatar;
@@ -64,7 +63,6 @@ const Channel = ({ user }) => {
           setState({ ...state, fetched: true, channel, content: 2 });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -99,7 +97,6 @@ const Channel = ({ user }) => {
     }
   };
   const changeContent = (component) => {
-    console.log(component);
     let contents = {
       init: 1,
       video: 2,

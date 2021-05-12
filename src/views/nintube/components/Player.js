@@ -99,7 +99,6 @@ const Player = ({ url = "" }) => {
           setState({ ...state, fetched: true, file: data.file });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -120,11 +119,9 @@ const Player = ({ url = "" }) => {
   }, []);
   useEffect(() => {
     if (url !== "") {
-      console.log(url);
       setState({ ...state, file: url });
     }
   }, [url]);
-  // console.log(url);
   return (
     //
     <>

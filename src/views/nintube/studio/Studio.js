@@ -77,7 +77,6 @@ const Studio = ({ user, history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      // console.log(user.token);
       var data = { token: user.token };
       myVideos(data)
         .then(function (data) {
@@ -101,7 +100,6 @@ const Studio = ({ user, history }) => {
           setState({ ...state, fetched: true, videos });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -200,7 +198,6 @@ const Studio = ({ user, history }) => {
                   ),
                   Deletar: (item) => (
                     <td className="align-middle">
-                      {console.log(item)}
                       <CButton
                         color="btn btn-ghost-danger"
                         title="Deletar"

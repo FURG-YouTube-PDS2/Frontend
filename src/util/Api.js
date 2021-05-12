@@ -1,6 +1,6 @@
 import axios from "axios";
-// export const API_URL = "http://localhost:3334/";
-export const API_URL = "http://f51a762ef097.ngrok.io/";
+export const API_URL = "http://localhost:3334/";
+//export const API_URL = "http://f51a762ef097.ngrok.io/";
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
@@ -41,7 +41,6 @@ export const editProfile = (data, token) => {
   const config = {
     headers: { authorization: token },
   };
-  console.log(data, token);
   return axios
     .put(API_URL + "users/profile/edit", data, config)
     .then(function (res) {
@@ -51,7 +50,6 @@ export const editProfile = (data, token) => {
 };
 
 export const uploadVideo = (data, token) => {
-  console.log(token);
   const config = {
     headers: { authorization: token },
   };

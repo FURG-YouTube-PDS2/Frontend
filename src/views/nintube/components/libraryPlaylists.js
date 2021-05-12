@@ -54,7 +54,6 @@ const LibraryPlaylists = ({ user }) => {
       };
       Library(data)
         .then(function (data) {
-          console.log(data);
           setState({
             ...state,
             fetched: true,
@@ -67,7 +66,6 @@ const LibraryPlaylists = ({ user }) => {
         })
 
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {

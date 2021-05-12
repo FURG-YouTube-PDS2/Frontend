@@ -63,18 +63,6 @@ const Upload = ({ user, history }) => {
       video_name: files[0].path,
       video_url: URL.createObjectURL(files[0]),
     });
-
-    // const options = {
-    //   onUploadProgess: (progressEvent) => {
-    //     const { loaded, total } = progressEvent;
-    //     let percent = Math.floor((loaded * 100) / total);
-    //     console.log("entro");
-    //     console.log(`${loaded}kb of ${total}kb | ${percent}%`);
-    //     // if (percent < 100) {
-    //     //   setState({ ...state, upload_percent: percent });
-    //     // }
-    //   },
-    // };
   };
   const SingleValue = ({ children, ...props }) => (
     <components.SingleValue {...props}>{children}</components.SingleValue>
@@ -86,11 +74,6 @@ const Upload = ({ user, history }) => {
       error: "",
       message: "Fazendo upload do video...",
     });
-    // console.log(state.thumb);
-    // console.log(state.video);
-    // console.log(state.description);
-    // console.log(state.title);
-    // const data = new FormData();
     if (
       !state.video ||
       !state.description ||
@@ -112,23 +95,6 @@ const Upload = ({ user, history }) => {
           message: "",
         });
       } else {
-        /*const data = new FormData();
-data.append("file", state.video);
-data.append("title", state.title);
-data.append("description", state.description);
-data.append("privacy", state.privacy);
-data.append("thumb", state.thumb);
-
-console.log(data);*/
-
-        /*var data = {
-file: state.video,
-title: state.title,
-description: state.description,
-privacy: state.privacy,
-thumb: state.thumb,
-};*/
-
         const data = {
           title: state.title,
           file: await toBase64(state.video),
@@ -140,13 +106,8 @@ thumb: state.thumb,
           }),
         };
 
-        console.log(data);
-
-        //submitForm("application/json", data, (msg) => console.log(msg));
-
         uploadVideo(data, user.token)
           .then(function (data) {
-            console.log(data);
             alert(
               "Sucesso!",
               "Seu vídeo foi criado com sucesso, escolha agora entre ver o seu vídeo ou adicionar novo vídeo",
@@ -165,14 +126,8 @@ thumb: state.thumb,
                 },
               ]
             );
-            // setState({
-            //   ...state,
-            //   error: "",
-            //   message: "Video criado com sucesso!",
-            // });
           })
           .catch((err) => {
-            console.log(err);
             setState({ ...state, error: "Dados inválidos", message: "" });
           });
       }
@@ -231,7 +186,6 @@ thumb: state.thumb,
             setState({ ...state, fetched: true, recommend });
           })
           .catch((err) => {
-            console.log(err.message);
             setState({ ...state, fetched: true });
             alert("Houve um problema", "Por favor recarregue a pagina", [
               {

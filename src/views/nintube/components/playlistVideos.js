@@ -201,7 +201,6 @@ const PlaylistVideos = ({ user }) => {
         }
       }
     }
-    // console.log(vet_playlist);
     setState({ ...state, videos: vet_playlist, change: true });
   };
 
@@ -218,7 +217,6 @@ const PlaylistVideos = ({ user }) => {
       videos: videos,
     };
     setState({ ...state, change: false });
-    console.log(data);
     editPlaylist(data)
       .then(function (data) {
         alert("Ação", "Sua Playlist foi editada com sucesso!");
@@ -233,7 +231,6 @@ const PlaylistVideos = ({ user }) => {
 
   const Delete = (video_id, idx) => {
     var data = { token: user.token, playlist_id: id, video_id: video_id };
-    console.log(data);
     let vet_playlist = [];
     for (let index = 0; index < state.videos.length; index++) {
       if (index !== idx) {
@@ -242,7 +239,6 @@ const PlaylistVideos = ({ user }) => {
     }
     removeVideoFromPlaylist(data)
       .then(function (data) {
-        console.log(data);
         setState({ ...state, videos: vet_playlist });
         alert("Ação", "Video foi deletado com sucesso!");
       })
@@ -369,7 +365,6 @@ const PlaylistVideos = ({ user }) => {
       var data = { token: user.token, playlist_id: id };
       listPlaylist(data)
         .then(function (data) {
-          console.log(data);
           setState({
             ...state,
             fetched: true,
@@ -379,7 +374,6 @@ const PlaylistVideos = ({ user }) => {
           });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -399,7 +393,6 @@ const PlaylistVideos = ({ user }) => {
       // });
     }
   }, []);
-  console.log(state.playlist);
 
   return (
     <div
@@ -636,7 +629,6 @@ const PlaylistVideos = ({ user }) => {
                                   };
                                   deletPlaylist(data)
                                     .then(function (data) {
-                                      console.log(data);
                                       alert(
                                         "Ação",
                                         "Sua Playlist foi deletada com sucesso!",

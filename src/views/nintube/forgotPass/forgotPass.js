@@ -56,23 +56,19 @@ const Forgot = ({ history }) => {
     setState({ ...state, error: "", message: "Alterando..." });
 
     var password = "";
-    console.log(state.password_confirm);
     if (!state.password_confirm || !state.password_new) {
-      console.log("teste");
       setState({
         ...state,
         error: "Por favor, inserir valores em todos os campos",
         message: "",
       });
     } else if (state.password_confirm !== state.password_new) {
-      console.log("tes");
       setState({
         ...state,
         error: "As senhas não batem. Tente novamente!",
         message: "",
       });
     } else {
-      console.log(id);
       password = md5(state.password_new);
 
       var Newdata = {
@@ -81,11 +77,9 @@ const Forgot = ({ history }) => {
       };
       // data.append("id", id);
       // data.append("password", password);
-      console.log(Newdata);
 
       editPass(Newdata)
         .then(function (data) {
-          console.log(data);
           if (data.status === 1) {
             setState({
               ...state,
@@ -109,7 +103,6 @@ const Forgot = ({ history }) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }

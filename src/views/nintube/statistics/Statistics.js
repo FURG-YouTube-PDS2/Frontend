@@ -62,7 +62,6 @@ const Statistics = ({ user }) => {
       getChartValues(data)
         .then(function (data) {
           // setState({})
-          console.log(data.channels);
           var channel_names = [];
           data.channels.name.map((channel) =>
             channel_names.push(channel.username)
@@ -87,7 +86,6 @@ const Statistics = ({ user }) => {
           });
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }

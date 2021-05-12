@@ -47,17 +47,9 @@ const StackVideo = ({ user }) => {
 
       riseVideos(data)
         .then(function (data) {
-          console.log(data);
-          // var array = new Array;
-          // console.log(data);
-          // for (let i = 0; i < aray.length; i++) {
-          //   const element = array[i];
-
-          // }
           setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -70,7 +62,6 @@ const StackVideo = ({ user }) => {
         });
     }
   }, []);
-  console.log(state.videos);
   return (
     <div>
       {!state.fetched && (

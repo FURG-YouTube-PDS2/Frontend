@@ -34,7 +34,6 @@ const Fire = ({ history, user }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log(user);
     }
   }, []);
   return (

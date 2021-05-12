@@ -48,11 +48,6 @@ const Login = ({ history, setUser }) => {
       email: state.email,
       password: md5(state.password),
     };
-    // const data = {
-    //   email: "davi@furg.br",
-    //   password: "senha",
-    // };
-    // console.log(data);
     if (!data.email || !data.password) {
       setState({
         ...state,
@@ -60,11 +55,9 @@ const Login = ({ history, setUser }) => {
         message: "",
       });
     } else {
-      // console.log(data);
       loginUser(data)
         .then(function (data) {
           if (data.status === 1) {
-            console.log(data);
             var user = {
               token: data.token,
               avatar: data.avatar,
@@ -77,7 +70,6 @@ const Login = ({ history, setUser }) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }

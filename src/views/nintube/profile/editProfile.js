@@ -78,7 +78,6 @@ const Profile = ({ user }) => {
 
     const data = new FormData();
     // data.append("avatar", state.avatar);
-    console.log(state.user.avatar);
     var password = "";
 
     if (
@@ -126,7 +125,6 @@ const Profile = ({ user }) => {
       };
       editProfile(values, user.token)
         .then(function (data) {
-          console.log(data);
           if (data.status === 1) {
             setState({
               ...state,
@@ -157,7 +155,6 @@ const Profile = ({ user }) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }
@@ -165,7 +162,6 @@ const Profile = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      // console.log(user);
       if (!user) {
         alert(
           "Houve um problema",
@@ -189,11 +185,9 @@ const Profile = ({ user }) => {
       var data = { token: user.token };
       getProfile(data, user.token)
         .then(function (data) {
-          // console.log(data.birthdate.substring(0, 10));
           setState({ ...state, user: data, fetched: true });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {

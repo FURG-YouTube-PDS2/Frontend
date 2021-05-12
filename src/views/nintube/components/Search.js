@@ -33,24 +33,26 @@ import "../styles/nintube.css";
 import "./componentStyle.css";
 //API
 import { SearchAll, Inscribe } from "../../../util/Api";
+import NoVideo from "./noVideo";
 import { diffDate } from "../../../util/dateDiff";
 
 const Search = ({ user }) => {
   let searchText = useParams().search;
   let type = 1;
-  console.log(searchText.slice(4));
   if (searchText.startsWith("TAG:")) {
     searchText = searchText.slice(4);
     type = 0;
   }
   const [state, setState] = useState({
     searchText: searchText,
+    fetched: false,
     type: type,
     videos: [],
     channels: [],
   });
 
   let history = useHistory();
+
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
   };
@@ -61,59 +63,8 @@ const Search = ({ user }) => {
     }
   };
 
-  // const searchSimulator = () => {
-  //     let data = {
-  //       videos: [
-  //           {
-  //            id: "wadwfagjtfd",
-  //            title: "VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 ",
-  //            views: 10,
-  //            created_at: "2021-03-23 20:26:13",
-  //            channel_name: "Testando 1",
-  //            channel_id: "541fas165awf651waf",
-  //            description: "TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 ",
-  //            thumb: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //            avatar: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //           },
-  //           {
-  //           id: "grhftgxgrdzrgd",
-  //           title: "VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 ",
-  //           views: 20,
-  //           created_at: "2021-03-23 20:26:13",
-  //           channel_name: "Testando 2",
-  //           channel_id: "541fas165awf651waf",
-  //           description: "TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 ",
-  //           thumb: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //           avatar: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //           },
-  //          ],
-  //       channels : [
-  //          {
-  //           id: "adwawd65156",
-  //           avatar: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //           name: "CHANNEL 1",
-  //           subscribers: 10000000,
-  //           video_count: 20,
-  //           description: "bjhadwjhdawbh",
-  //           is_subscribed: true,
-  //          },
-  //          {
-  //           id: "hhdrhdr",
-  //           avatar: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //           name: "CHANNEL 2",
-  //           subscribers: 684500000,
-  //           video_count: 50,
-  //           description: "52325fw",
-  //           is_subscribed: true,
-  //          },
-  //          ]
-  //     }
-
-  //   return data
-  // }
-
   const doSearch = () => {
-    console.log(state.searchText);
+    handleClick("search",state.searchText)
     var data = {
       input: state.searchText,
       type: state.type,
@@ -123,12 +74,12 @@ const Search = ({ user }) => {
     // data = searchSimulator()
     // setState({ ...state, videos:data.videos, channels: data.channels});
     SearchAll(data).then(function (data) {
-      console.log(data);
       setState({
         ...state,
         fetched: true,
         videos: data.videos,
         channels: data.channels,
+        fetched:true
       });
     });
   };
@@ -147,26 +98,7 @@ const Search = ({ user }) => {
       } else {
         channels[index].subscribers -= 1;
       }
-      setState({ ...state, channels });
-
-      //   Inscribe(data)
-      //     .then(function (data) {
-      //       let channels = state.channels;
-      //       channels[index].is_subscribed = ! channels[index].is_subscribed;
-      //       if (channels[index].is_subscribed) {
-      //         channels[index].subscribers += 1;
-      //       } else {
-      //         channels[index].subscribers -= 1;
-      //       }
-      //       setState({ ...state, channels });
-      //     })
-      //     .catch((err) => {
-      //       setState({
-      //         ...state,
-      //         error: "Algum problema aconteceu, tente novamente mais tarde!",
-      //         message: "",
-      //       });
-      //     });
+      setState({ ...state, channels});
     } else {
       alert("Login", "Você não está logado!");
     }
@@ -175,7 +107,6 @@ const Search = ({ user }) => {
   useEffect(() => {
     doSearch();
   }, []);
-  console.log(state);
   return (
     <div>
       <center>
@@ -250,10 +181,10 @@ const Search = ({ user }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
                       >
-                        {` ${item.subscribers} • ${item.video_count}  Vídeos • `}
+                        {`  ${item.subscribers} Inscritos • ${item.video_count}  Vídeos • `}
                       </span>{" "}
                       <br />
-                      {item.is_subscribed === false && (
+                      {item.is_subscribed === "0" && (
                         <CButton
                           id="inscribe-search"
                           name={"inscribe-" + index}
@@ -263,7 +194,7 @@ const Search = ({ user }) => {
                           Inscrever-se
                         </CButton>
                       )}{" "}
-                      {item.is_subscribed === true && (
+                      {item.is_subscribed === "1" && (
                         <CButton
                           id="inscribe-search"
                           name={"inscribe-" + index}
@@ -359,6 +290,7 @@ const Search = ({ user }) => {
           </CCol>
         </CRow>
       </CContainer>
+      {(state.fetched && state.channels.length == 0 && state.videos.length == 0) && <NoVideo/>}
     </div>
   );
 };

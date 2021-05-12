@@ -48,7 +48,6 @@ const ShowVideos = ({ user }) => {
       };
       Registrations(data)
         .then(function (data) {
-          console.log(data);
           var channels = [];
           for (let index = 0; index <= 14; index++) {
             channels.push(data.channels[0]);
@@ -61,7 +60,6 @@ const ShowVideos = ({ user }) => {
           });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {

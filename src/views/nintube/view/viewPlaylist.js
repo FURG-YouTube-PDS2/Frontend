@@ -70,7 +70,6 @@ const ViewPlaylist = ({ user, history }) => {
         target_id: state.video.owner_id,
       };
 
-      // console.log(data);
       Inscribe(data)
         .then(function (data) {
           let video = state.video;
@@ -313,7 +312,6 @@ const ViewPlaylist = ({ user, history }) => {
         window.confirm("Error");
         history.push("/home/");
       }
-      console.log(user.token);
       if (user) {
         var data = {
           video_id: id,
@@ -328,7 +326,6 @@ const ViewPlaylist = ({ user, history }) => {
 
       watchVideo(data)
         .then(function (data) {
-          console.log(data);
           setState({
             ...state,
             fetched: true,
@@ -340,7 +337,6 @@ const ViewPlaylist = ({ user, history }) => {
           });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {

@@ -36,14 +36,12 @@ const Home = ({ history, user }) => {
   const handleClick = () => {
     history.push("/view");
   };
-  console.log(user);
 
   const [response, setResponse] = useState("");
 
   /*useEffect(() => {
     const socket = socketIOClient("http://localhost:3334");
     socket.on("FromAPI", (data) => {
-      console.log(data);
     });
   }, []);*/
 

@@ -50,11 +50,9 @@ const HomeVideos = ({ user }) => {
 
       feedVideos(data)
         .then(function (data) {
-          console.log(data);
           setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -88,7 +86,6 @@ const HomeVideos = ({ user }) => {
         <CRow>
           {state.videos.map((item, index) => (
             <CCol sm="4">
-              {/* {console.log(item)} */}
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
                   onClick={() => handleClick("view", item.id)}

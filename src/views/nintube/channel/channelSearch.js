@@ -34,6 +34,7 @@ import "../components/componentStyle.css";
 //API
 import { SearchAll, Inscribe } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
+import NoVideo from "../components/noVideo";
 
 const ChannelSearch = ({ user, search, channel_id }) => {
   const [state, setState] = useState({
@@ -41,7 +42,6 @@ const ChannelSearch = ({ user, search, channel_id }) => {
     channel_id: channel_id,
     videos: [],
   });
-  console.log(state.searchText);
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -53,33 +53,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
     }
   };
 
-  // const searchSimulator = () => {
-  //     let data = {
-  //       videos: [
-  //           {
-  //            id: "wadwfagjtfd",
-  //            title: "VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 ",
-  //            views: 10,
-  //            created_at: "2021-03-23 20:26:13",
-  //            description: "TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 ",
-  //            thumb: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //            },
-  //           {
-  //           id: "grhftgxgrdzrgd",
-  //           title: "VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 ",
-  //           views: 20,
-  //           created_at: "2021-03-23 20:26:13",
-  //           description: "TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 ",
-  //           thumb: "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  //           },
-  //          ]
-  //     }
-
-  //   return data
-  // }
-
   const doSearch = () => {
-    console.log(state.searchText);
     var data = {
       input: state.searchText,
       channel_id: state.channel_id,
@@ -181,6 +155,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
           </CCol>
         </CRow>
       </CContainer>
+      {(state.fetched && state.channels.length == 0) && <NoVideo/>}
     </div>
   );
 };

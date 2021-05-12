@@ -108,7 +108,6 @@ const Profile = ({ user }) => {
       mouths[date.getMonth()] +
       " de " +
       date.getFullYear();
-    // console.log(birth);
     var gender = "";
     if (data.gender === "m") {
       gender = "Masculino";
@@ -119,7 +118,6 @@ const Profile = ({ user }) => {
     }
     data.gender = gender;
     data.birthdate = birth;
-    // console.log(data);
     return data;
   };
 
@@ -145,15 +143,12 @@ const Profile = ({ user }) => {
           ]
         );
       } else {
-        // console.log(user);
         var data = { token: user.token };
         getProfile(data, user.token)
           .then(function (data) {
-            console.log(data);
             setState({ ...state, user: solvedData(data), fetched: true });
           })
           .catch((err) => {
-            console.log(err.message);
             setState({ ...state, fetched: true });
             alert("Houve um problema", "Por favor recarregue a pagina", [
               {

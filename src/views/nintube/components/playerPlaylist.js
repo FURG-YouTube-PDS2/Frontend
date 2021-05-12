@@ -308,7 +308,6 @@ const Player = ({ url = "" }) => {
           setState({ ...state, fetched: true, file: data.file });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -329,7 +328,6 @@ const Player = ({ url = "" }) => {
       getPlaylistView({ playlist_id: playlistid })
         .then(function (data) {
           var select = "";
-          console.log(data);
           data.videos.map((video, index) => {
             if (video.id === id) {
               select = index;
@@ -345,7 +343,6 @@ const Player = ({ url = "" }) => {
           });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -366,11 +363,9 @@ const Player = ({ url = "" }) => {
   }, []);
   useEffect(() => {
     if (url !== "") {
-      console.log(url);
       setState({ ...state, file: url });
     }
   }, [url]);
-  // console.log(url);
 
   return (
     //

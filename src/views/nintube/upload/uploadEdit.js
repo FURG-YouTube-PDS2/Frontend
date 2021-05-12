@@ -45,17 +45,6 @@ const UploadEdit = ({ user, history }) => {
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
 
-    // const options = {
-    //   onUploadProgess: (progressEvent) => {
-    //     const { loaded, total } = progressEvent;
-    //     let percent = Math.floor((loaded * 100) / total);
-    //     console.log("entro");
-    //     console.log(`${loaded}kb of ${total}kb | ${percent}%`);
-    //     // if (percent < 100) {
-    //     //   setState({ ...state, upload_percent: percent });
-    //     // }
-    //   },
-    // };
   };
 
   const Edit = async () => {
@@ -65,9 +54,6 @@ const UploadEdit = ({ user, history }) => {
       display: false,
       message: "Salvando as alterações...",
     });
-    console.log(state.video);
-    console.log(state.description);
-    console.log(state.title);
     // const data = new FormData();
     // if (state.thumb || state.video) {
     if (!state.title) {
@@ -98,7 +84,6 @@ const UploadEdit = ({ user, history }) => {
           return tag.id;
         }),
       };
-      console.log(values);
       editVideo(values, user.token)
         .then(function (data) {
           alert(
@@ -126,7 +111,6 @@ const UploadEdit = ({ user, history }) => {
           // });
         })
         .catch((err) => {
-          console.log(err);
           setState({
             ...state,
             error: "Algum erro aconteceu, tente novamente mais tarde!",
@@ -171,15 +155,12 @@ const UploadEdit = ({ user, history }) => {
       var data = { video_id: id, token: user.token };
       getUploadVideo(data)
         .then(function (data) {
-          console.log(data.videoData.tags);
           var selecteds = data.videoData.tags.map((tag, index) => {
             return { id: tag.id, value: tag.id, label: tag.name };
           });
           var recommend = data.rec.map((tag, index) => {
             return { id: tag.id, value: tag.id, label: tag.name };
           });
-          console.log(recommend);
-          console.log(selecteds);
           setState({
             ...state,
             fetched: true,
@@ -193,7 +174,6 @@ const UploadEdit = ({ user, history }) => {
         })
 
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {

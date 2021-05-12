@@ -196,7 +196,6 @@ const SavePlaylist = ({ user, video_id, kill }) => {
       is_public: nPlaylist.public_bool,
       video_id: video_id,
     };
-    console.log(data);
     return await createPlaylist(data);
   };
 

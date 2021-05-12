@@ -48,12 +48,10 @@ const ChannelVideos = ({ user }) => {
       };
       channelGetVideos(data)
         .then(function (data) {
-          console.log(data);
           setState({ ...state, fetched: true, videos: data });
         })
 
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {

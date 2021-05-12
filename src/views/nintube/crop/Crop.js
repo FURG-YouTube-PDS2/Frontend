@@ -101,7 +101,6 @@ const Crop = ({ img, callback, reload, circle }) => {
 
     callback(dataURL);
   }, [completedCrop]);
-  // console.log(image);
   if (reload) {
     onSelectFile(img);
     reload = false;

@@ -58,7 +58,6 @@ const Register = ({ history }) => {
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
-    // console.log(state.avatar);
     const data = new FormData();
     data.append("avatar", state.avatar);
 
@@ -93,7 +92,6 @@ const Register = ({ history }) => {
         message: "",
       });
     } else {
-      // console.log(values);
       data.append("old_img", API_URL + "media/nintube/defaul.png");
       data.append("username", state.username);
       data.append("email", state.email);
@@ -124,7 +122,6 @@ const Register = ({ history }) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }

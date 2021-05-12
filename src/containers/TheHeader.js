@@ -1,6 +1,6 @@
 //REACT
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect} from "react";
+import { useHistory, useLocation} from "react-router-dom";
 //REDUX
 import { connect, useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -53,6 +53,8 @@ const TheHeader = ({ user, setuser }) => {
     password: "",
     search:""
   });
+  const [searchBar, setSearchBar] = useState(true);
+  let location = useLocation();
   let history = useHistory();
   const login = (e) => {
     e.preventDefault();
@@ -74,9 +76,6 @@ const TheHeader = ({ user, setuser }) => {
     } else {
       loginUser(data)
         .then(function (data) {
-          //console.log(user);
-          // console.log(data.token);
-          // console.log(data);
           var user = {
             token: data.token,
             avatar: "",
@@ -121,6 +120,11 @@ const TheHeader = ({ user, setuser }) => {
   const doSearch = () => {
     history.push("/search/"+state.search)
   }
+
+  useEffect(() => {
+    setSearchBar(location.pathname.split("/")[1] !== "search")
+  },[location])
+
   return (
     <CHeader class={dark + "-mode"} withSubheader>
       {/* <CToggler
@@ -151,8 +155,7 @@ const TheHeader = ({ user, setuser }) => {
         style={{ width: "50%", marginLeft: "auto" }}
         className="d-md-down-none mr-auto"
       >
-        {console.log(history.location)}
-        {history.location.pathname.split("/")[1] !== "search" &&
+        {searchBar &&
         <CInputGroup style={{ border: "1px solid red", borderRadius: "5px" }}>
           <CInput placeholder="Pesquisar" onKeyUp={handleKeys} onChange={(e)=>{setState({...state, search:e.target.value})}}/>
           <CInputGroupAppend>
