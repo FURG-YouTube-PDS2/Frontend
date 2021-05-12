@@ -17,7 +17,6 @@ const Playlist = ({ user, history }) => {
   });
   useEffect(() => {
     if (!state.fetched) {
-      console.log(user);
       if (user === null || user === "") {
         alert(
           "Houve um problema",

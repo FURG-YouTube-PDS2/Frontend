@@ -123,7 +123,7 @@ const Profile = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      if (!user) {
+      if (user === null || user === "") {
         alert(
           "Houve um problema",
           "Você não está logado para realizar essa ação por favor realize o login.",

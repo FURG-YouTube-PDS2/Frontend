@@ -281,9 +281,6 @@ const Player = ({ url = "" }) => {
       var play = stat.played;
       if (play === 1) {
         if (playlist.index_select !== playlist.videos.length - 1) {
-          console.log("entro2");
-          console.log(playlist.videos);
-          console.log(playlist.videos[playlist.index_select]);
           history.push(
             "/viewPlaylist/" +
               playlistid +

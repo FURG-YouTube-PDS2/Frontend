@@ -358,8 +358,6 @@ const View = ({ user, history }) => {
           setChat(chat_text);
         }
         if (Chat.messages[Chat.messages.length - 1].text === false) {
-          console.log(Chat.messages);
-
           var chat_in = chat;
           if (Chat.messages[Chat.messages.length - 1].username !== "") {
             chat_in.push([
@@ -374,7 +372,6 @@ const View = ({ user, history }) => {
               Chat.messages[Chat.messages.length - 1].text,
               "Quest" + random + " acabou de entrar",
             ]);
-            console.log(chat_in);
             setChat(chat_in);
           }
         }

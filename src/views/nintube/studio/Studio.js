@@ -77,40 +77,61 @@ const Studio = ({ user, history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      var data = { token: user.token };
-      myVideos(data)
-        .then(function (data) {
-          var videos = [];
-          for (let i = 0; i < data.length; i++) {
-            var date = new Date(data[i][0].created_at);
-            videos.push({
-              id: data[i][0].id,
-              thumb: data[i][0].thumb,
-              titulo: data[i][0].title,
-              privacidade: data[i][0].privacy,
-              criado:
-                date.getDate() +
-                "/" +
-                (date.getMonth() + 1) +
-                "/" +
-                date.getFullYear(),
-            });
-          }
-
-          setState({ ...state, fetched: true, videos });
-        })
-        .catch((err) => {
-          setState({ ...state, fetched: true });
-          alert("Houve um problema", "Por favor recarregue a pagina", [
+      if (user === null || user === "") {
+        alert(
+          "Houve um problema",
+          "Você não está logado para realizar essa ação por favor realize o login.",
+          [
             {
-              label: "Recarregar",
+              label: "Cancelar",
               onClick: () => {
-                window.location.reload();
+                history.push("/home");
               },
             },
-          ]);
-        });
-      // setState({ ...state, fetched: true });
+            {
+              label: "Login",
+              onClick: () => {
+                history.push("/login");
+              },
+            },
+          ]
+        );
+      } else {
+        var data = { token: user.token };
+        myVideos(data)
+          .then(function (data) {
+            var videos = [];
+            for (let i = 0; i < data.length; i++) {
+              var date = new Date(data[i][0].created_at);
+              videos.push({
+                id: data[i][0].id,
+                thumb: data[i][0].thumb,
+                titulo: data[i][0].title,
+                privacidade: data[i][0].privacy,
+                criado:
+                  date.getDate() +
+                  "/" +
+                  (date.getMonth() + 1) +
+                  "/" +
+                  date.getFullYear(),
+              });
+            }
+
+            setState({ ...state, fetched: true, videos });
+          })
+          .catch((err) => {
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+            ]);
+          });
+        // setState({ ...state, fetched: true });
+      }
     }
   }, []);
   return (

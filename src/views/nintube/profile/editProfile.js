@@ -162,7 +162,7 @@ const Profile = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      if (!user) {
+      if (user === null || user === "") {
         alert(
           "Houve um problema",
           "Você não está logado para realizar essa ação por favor realize o login.",
@@ -181,24 +181,25 @@ const Profile = ({ user }) => {
             },
           ]
         );
-      }
-      var data = { token: user.token };
-      getProfile(data, user.token)
-        .then(function (data) {
-          setState({ ...state, user: data, fetched: true });
-        })
-        .catch((err) => {
-          setState({ ...state, fetched: true });
-          alert("Houve um problema", "Por favor recarregue a pagina", [
-            {
-              label: "Recarregar",
-              onClick: () => {
-                window.location.reload();
+      } else {
+        var data = { token: user.token };
+        getProfile(data, user.token)
+          .then(function (data) {
+            setState({ ...state, user: data, fetched: true });
+          })
+          .catch((err) => {
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
               },
-            },
-          ]);
-        });
-      // setState({ ...state, fetched: true });
+            ]);
+          });
+        // setState({ ...state, fetched: true });
+      }
     }
   }, []);
 
