@@ -31,6 +31,7 @@ import {
 } from "@coreui/react-chartjs";
 //API
 import { getChartValues } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 //Style
 import "../components/componentStyle.css";
 
@@ -46,7 +47,7 @@ var back_data = {
   },
 };
 
-const Statistics = ({ user }) => {
+const Statistics = ({ user, history }) => {
   const [state, setState] = useState({
     data: ["0"],
     gender: [],
@@ -56,38 +57,59 @@ const Statistics = ({ user }) => {
   });
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        token: user.token,
-      };
-      getChartValues(data)
-        .then(function (data) {
-          // setState({})
-          var channel_names = [];
-          data.channels.name.map((channel) =>
-            channel_names.push(channel.username)
-          );
-          var age = {
-            data: data.age,
-            labels: ["-10", "10-13", "14-16", "17-19", "19-24", "24+"],
-          };
-          var gender = {
-            data: data.gender,
-            labels: ["Feminino", "Masculino", "Outros"],
-          };
-          var channels = {
-            data: data.channels.data,
-            labels: channel_names,
-          };
-          setState({
-            ...state,
-            gender: gender,
-            age: age,
-            channels: channels,
+      if (user === null || user === "") {
+        alert(
+          "Houve um problema",
+          "Você não está logado para realizar essa ação por favor realize o login.",
+          [
+            {
+              label: "Cancelar",
+              onClick: () => {
+                history.push("/home");
+              },
+            },
+            {
+              label: "Login",
+              onClick: () => {
+                history.push("/login");
+              },
+            },
+          ]
+        );
+      } else {
+        var data = {
+          token: user.token,
+        };
+        getChartValues(data)
+          .then(function (data) {
+            // setState({})
+            var channel_names = [];
+            data.channels.name.map((channel) =>
+              channel_names.push(channel.username)
+            );
+            var age = {
+              data: data.age,
+              labels: ["-10", "10-13", "14-16", "17-19", "19-24", "24+"],
+            };
+            var gender = {
+              data: data.gender,
+              labels: ["Feminino", "Masculino", "Outros"],
+            };
+            var channels = {
+              data: data.channels.data,
+              labels: channel_names,
+            };
+            setState({
+              ...state,
+              gender: gender,
+              age: age,
+              channels: channels,
+            });
+          })
+          .catch((err) => {
+            setState({ ...state, error: "Dados inválidos", message: "" });
           });
-        })
-        .catch((err) => {
-          setState({ ...state, error: "Dados inválidos", message: "" });
-        });
+      }
     }
   }, []);
 

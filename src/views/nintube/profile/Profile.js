@@ -123,7 +123,7 @@ const Profile = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      if (!user) {
+      if (user === null || user === "") {
         alert(
           "Houve um problema",
           "Você não está logado para realizar essa ação por favor realize o login.",
@@ -209,7 +209,7 @@ const Profile = ({ user }) => {
                         marginLeft: "27px",
                         borderRadius: "50%",
                       }}
-                      src={state.user.avatar}
+                      src={API_URL + "images/getAvatar/" + state.user.id}
                       // alt="avatar"
                     />
                   </div>

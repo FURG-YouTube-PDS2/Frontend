@@ -27,7 +27,7 @@ import NoVideo from "./noVideo";
 //Style
 import "./componentStyle.css";
 //API
-import { historic } from "../../../util/Api";
+import { historic, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
 const HistVideo = ({ user }) => {
@@ -106,7 +106,7 @@ const HistVideo = ({ user }) => {
                         borderBottom: "1px solid black",
                         borderRadius: "10px",
                       }}
-                      src={item.thumb}
+                      src={API_URL + "images/getImage/" + item.id}
                     />
                     <CCardText>
                       <CCardText>

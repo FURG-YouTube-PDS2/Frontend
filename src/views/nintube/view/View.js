@@ -15,6 +15,12 @@ import {
   CFormGroup,
   CLabel,
   CInputRadio,
+  CSwitch,
+  CInputGroup,
+  CInputGroupAppend,
+  CInputGroupPrepend,
+  CTextarea,
+  CCard,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { confirmAlert } from "react-confirm-alert"; // Import
@@ -23,9 +29,11 @@ import Player from "../components/Player";
 import Comments from "../components/Comments";
 import Recommended from "../components/Recommended";
 import SavePlaylist from "../components/savePlaylist";
+import useChat from "../components/useChat";
 //Style
 //API
 import Dropzone from "react-dropzone";
+import { nowTime } from "../../../util/dateDiff";
 import { alert } from "../../../util/alertApi";
 import {
   Inscribe,
@@ -50,10 +58,43 @@ const View = ({ user, history }) => {
     playlistComp: "",
     tags: [],
     status: "",
+    chatOn: false,
+    recommend_video: "",
   });
+
+  const [text, setText] = useState("");
+  const [chat, setChat] = useState([]);
+
+  const Chat = useChat(id, user !== "" && user !== null ? user.username : "");
+
+  const handleTextChange = (event) => {
+    setText(event.target.value);
+  };
+
+  const sendM = () => {
+    if (text !== "") {
+      setText("");
+      Chat.send({ message: text });
+    }
+  };
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
+  };
+
+  const handleKeys = (e, func) => {
+    if (e.keyCode === 13) {
+      func();
+    }
+  };
+
+  const recommendVideo = (video_id) => {
+    setState({ ...state, recommend_video: video_id });
+  };
+
+  const viewRecommended = () => {
+    history.push("/view/" + state.recommend_video);
+    window.location.reload();
   };
 
   const shared = (item) => {
@@ -304,6 +345,47 @@ const View = ({ user, history }) => {
   };
 
   useEffect(() => {
+    if (Chat !== "") {
+      if (Chat.messages.length !== 0) {
+        if (Chat.messages[Chat.messages.length - 1].text !== false) {
+          var chat_text = chat;
+          chat_text.push([
+            Chat.messages[Chat.messages.length - 1].text,
+            Chat.messages[Chat.messages.length - 1].username,
+            Chat.messages[Chat.messages.length - 1].body.message,
+            nowTime(),
+          ]);
+          setChat(chat_text);
+        }
+        if (Chat.messages[Chat.messages.length - 1].text === false) {
+          var chat_in = chat;
+          if (Chat.messages[Chat.messages.length - 1].username !== "") {
+            chat_in.push([
+              Chat.messages[Chat.messages.length - 1].text,
+              Chat.messages[Chat.messages.length - 1].username +
+                " acabou de entrar",
+            ]);
+            setChat(chat_in);
+          } else {
+            var random = Math.floor(Math.random() * 100) + 100;
+            chat_in.push([
+              Chat.messages[Chat.messages.length - 1].text,
+              "Quest" + random + " acabou de entrar",
+            ]);
+            setChat(chat_in);
+          }
+        }
+        // setChat([
+        //   Chat.messages[Chat.messages.length - 1].text,
+        //   Chat.messages[Chat.messages.length - 1].username,
+        // ]);
+
+        Chat.shiftMessages();
+      }
+    }
+  }, [Chat.messages]);
+
+  useEffect(() => {
     if (!state.fetched) {
       if (id === null) {
         window.confirm("Error");
@@ -358,8 +440,8 @@ const View = ({ user, history }) => {
         {state.status === 1 && (
           <>
             <div style={{ marginRight: "auto", width: "70%" }}>
-              <Player />
-              <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
+              <Player playRecommended={viewRecommended} />
+              <CBreadcrumb style={{ width: "100%", marginLeft: "1.7%" }}>
                 <div
                   style={{ width: "90%", marginLeft: "1.5%", color: "white" }}
                 >
@@ -455,7 +537,7 @@ const View = ({ user, history }) => {
                 <div style={{ width: "7%", height: "100%" }}>
                   <img
                     onClick={() => handleClick("channel", state.video.owner_id)}
-                    src={state.video.owner_avatar}
+                    src={API_URL + "images/getAvatar/" + state.video.owner_id}
                     style={{ borderRadius: "40%", cursor: "pointer" }}
                     width="44"
                     height="44"
@@ -514,10 +596,160 @@ const View = ({ user, history }) => {
               </CBreadcrumb>
               <Comments />
             </div>
-            {/* </CCol>
-        <CCol sm="4"> */}
             <div style={{ marginLeft: "auto", width: "25%" }}>
-              <Recommended />
+              {state.status === 1 && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignContent: "center",
+                    textAlign: "center",
+                    alignItems: "center",
+                    marginBottom: "2%",
+                  }}
+                >
+                  <CSwitch
+                    labelOff="off"
+                    labelOn="On"
+                    className={"mx-1"}
+                    shape={"pill"}
+                    color={"info"}
+                    onChange={(e) =>
+                      setState({ ...state, chatOn: !state.chatOn })
+                    }
+                  />{" "}
+                  <span style={{ color: "white" }}> Chat </span>{" "}
+                </div>
+              )}
+              <div hidden={state.chatOn}>
+                <Recommended video_id={recommendVideo} />
+              </div>
+              <div hidden={!state.chatOn}>
+                <div
+                  className="scroll"
+                  style={{
+                    height: "500px",
+                    display: "flex",
+                    flexDirection: "column",
+                    flexWrap: "nowrap",
+                    overflowY: "scroll",
+                    border: "2px solid white",
+                    borderRadius: "10px",
+                    padding: "5px",
+                    marginBottom: "2%",
+                    backgroundColor: "rgba(70,70,70,255)",
+                  }}
+                >
+                  {chat.map((text, index) => (
+                    <div>
+                      {text[0] ? (
+                        <div>
+                          <div
+                            style={{
+                              color: "white",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            {" "}
+                            <span
+                              style={{
+                                display: "flex",
+                              }}
+                            >
+                              {user === null || user.username !== text[1] ? (
+                                <span
+                                  style={{
+                                    marginLeft: "2%",
+                                    fontWeight: "bold",
+                                    fontSize: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  {text[1]}
+                                </span>
+                              ) : (
+                                <span
+                                  style={{
+                                    marginLeft: "2%",
+                                    fontWeight: "bold",
+                                    color: "#4DC4FF",
+                                    fontSize: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  {text[1]}
+                                </span>
+                              )}{" "}
+                              <span
+                                style={{
+                                  fontSize: "10px",
+                                  marginTop: "auto",
+                                  marginBottom: "auto",
+                                  marginLeft: "2%",
+                                }}
+                              >
+                                - {text[3]}
+                              </span>
+                            </span>
+                            <span
+                              style={{
+                                marginLeft: "8%",
+                                overflowWrap: "break-word",
+                                wordWrap: "break-word",
+                                hyphens: "auto",
+                              }}
+                            >
+                              {" "}
+                              {text[2]}
+                            </span>
+                          </div>
+                          <hr
+                            style={{ color: "white", backgroundColor: "white" }}
+                          />
+                        </div>
+                      ) : (
+                        <div style={{ display: "flex" }}>
+                          {" "}
+                          <p
+                            style={{
+                              fontStyle: "italic",
+                              marginLeft: "auto",
+                              marginRight: "auto",
+                              color: "white",
+                            }}
+                          >
+                            {text[1]}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {user && (
+                  <CInputGroup>
+                    <CInput
+                      onKeyUp={(e) => handleKeys(e, sendM)}
+                      id="input2-group2"
+                      name="input2-group2"
+                      type="text"
+                      placeholder="Mensagem"
+                      value={text}
+                      onChange={handleTextChange}
+                      className="outline"
+                      // maxlength="30"
+                    />
+                    <CInputGroupAppend>
+                      <CButton
+                        onClick={sendM}
+                        type="button"
+                        color="primary"
+                        className="outline"
+                      >
+                        Enviar <CIcon name="cilSend" />
+                      </CButton>
+                    </CInputGroupAppend>
+                  </CInputGroup>
+                )}
+              </div>
             </div>
             {state.playlistComp}
           </>

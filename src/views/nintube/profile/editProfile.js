@@ -39,7 +39,7 @@ import CIcon from "@coreui/icons-react";
 import Crop from "../crop/Crop";
 //API
 import { alert } from "../../../util/alertApi";
-import { getProfile, editProfile } from "../../../util/Api";
+import { getProfile, editProfile, API_URL } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 //Style
@@ -162,7 +162,7 @@ const Profile = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      if (!user) {
+      if (user === null || user === "") {
         alert(
           "Houve um problema",
           "Você não está logado para realizar essa ação por favor realize o login.",
@@ -181,24 +181,25 @@ const Profile = ({ user }) => {
             },
           ]
         );
-      }
-      var data = { token: user.token };
-      getProfile(data, user.token)
-        .then(function (data) {
-          setState({ ...state, user: data, fetched: true });
-        })
-        .catch((err) => {
-          setState({ ...state, fetched: true });
-          alert("Houve um problema", "Por favor recarregue a pagina", [
-            {
-              label: "Recarregar",
-              onClick: () => {
-                window.location.reload();
+      } else {
+        var data = { token: user.token };
+        getProfile(data, user.token)
+          .then(function (data) {
+            setState({ ...state, user: data, fetched: true });
+          })
+          .catch((err) => {
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
               },
-            },
-          ]);
-        });
-      // setState({ ...state, fetched: true });
+            ]);
+          });
+        // setState({ ...state, fetched: true });
+      }
     }
   }, []);
 
@@ -267,7 +268,7 @@ const Profile = ({ user }) => {
                         />
                         <span>Selecione seu Avatar</span>
                         <img
-                          src={state.user.avatar}
+                          src={API_URL + "images/getAvatar/" + state.user.id}
                           style={{
                             width: "55px",
                             marginLeft: "27px",
@@ -598,7 +599,7 @@ const Profile = ({ user }) => {
                     Selecione seu Avatar
                     <img
                       style={{ width: "50px" }}
-                      src={state.user.avatar}
+
                       alt="avatar"
                     ></img>
                     <CInput

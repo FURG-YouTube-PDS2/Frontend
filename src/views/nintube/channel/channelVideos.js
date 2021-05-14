@@ -23,7 +23,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //API
-import { channelGetVideos } from "../../../util/Api";
+import { channelGetVideos, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "../components/componentStyle.css";
@@ -42,10 +42,17 @@ const ChannelVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        user_id: id !== "0" ? id : "",
-        token: user.token,
-      };
+      if (user !== null && user !== "") {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: "",
+        };
+      }
       channelGetVideos(data)
         .then(function (data) {
           setState({ ...state, fetched: true, videos: data });
@@ -79,7 +86,7 @@ const ChannelVideos = ({ user }) => {
             <CCol style={{ width: "5%" }} sm="2">
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
-                  onClick={() => handleClick("view", item.id)}
+                  onClick={() => handleClick("view", item.video_id)}
                   style={{
                     width: "100%",
                     height: "150px",
@@ -88,12 +95,12 @@ const ChannelVideos = ({ user }) => {
                     borderBottomLeftRadius: "10px",
                     borderBottomRightRadius: "10px",
                   }}
-                  src={item.thumb}
+                  src={API_URL + "images/getImage/" + item.video_id}
                 />
                 <div>
                   <CCardBody style={{ fontSize: "80%" }}>
                     <h3
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() => handleClick("view", item.video_id)}
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
                       {item.title}
@@ -103,7 +110,7 @@ const ChannelVideos = ({ user }) => {
                     >
                       <CCardText
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.id)}
+                        onClick={() => handleClick("view", item.video_id)}
                       >{`${item.views} Visualizações • ${diffDate(
                         state.today,
                         item.created_at

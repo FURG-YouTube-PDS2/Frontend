@@ -32,7 +32,7 @@ import CIcon from "@coreui/icons-react";
 import "../styles/nintube.css";
 import "./componentStyle.css";
 //API
-import { SearchAll, Inscribe } from "../../../util/Api";
+import { SearchAll, Inscribe, API_URL } from "../../../util/Api";
 import NoVideo from "./noVideo";
 import { diffDate } from "../../../util/dateDiff";
 
@@ -64,7 +64,7 @@ const Search = ({ user }) => {
   };
 
   const doSearch = () => {
-    handleClick("search",state.searchText)
+    handleClick("search", state.searchText);
     var data = {
       input: state.searchText,
       type: state.type,
@@ -79,7 +79,7 @@ const Search = ({ user }) => {
         fetched: true,
         videos: data.videos,
         channels: data.channels,
-        fetched:true
+        fetched: true,
       });
     });
   };
@@ -98,7 +98,7 @@ const Search = ({ user }) => {
       } else {
         channels[index].subscribers -= 1;
       }
-      setState({ ...state, channels});
+      setState({ ...state, channels });
     } else {
       alert("Login", "Você não está logado!");
     }
@@ -160,7 +160,7 @@ const Search = ({ user }) => {
                           width: "75px",
                         }}
                         onClick={() => handleClick("channel", item.id)}
-                        src={item.avatar}
+                        src={API_URL + "images/getAvatar/" + item.id}
                         className="c-avatar-img"
                         alt="admin@bootstrapmaster.com"
                       />
@@ -231,7 +231,7 @@ const Search = ({ user }) => {
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.thumb}
+                    src={API_URL + "images/getImage/" + item.id}
                   />
                   <CCardText>
                     <CCardText>
@@ -265,7 +265,7 @@ const Search = ({ user }) => {
                           <CImg
                             style={{ cursor: "pointer" }}
                             onClick={() => handleClick("channel", item.id)}
-                            src={item.avatar}
+                            src={API_URL + "images/getAvatar/" + item.id}
                             className="c-avatar-img"
                             alt="admin@bootstrapmaster.com"
                           />
@@ -290,7 +290,9 @@ const Search = ({ user }) => {
           </CCol>
         </CRow>
       </CContainer>
-      {(state.fetched && state.channels.length == 0 && state.videos.length == 0) && <NoVideo/>}
+      {state.fetched &&
+        state.channels.length == 0 &&
+        state.videos.length == 0 && <NoVideo />}
     </div>
   );
 };

@@ -27,7 +27,7 @@ import NoVideo from "./noVideo";
 //Style
 import "./componentStyle.css";
 //API
-import { riseVideos } from "../../../util/Api";
+import { riseVideos, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
 const StackVideo = ({ user }) => {
@@ -94,7 +94,7 @@ const StackVideo = ({ user }) => {
                         borderBottom: "1px solid black",
                         borderRadius: "10px",
                       }}
-                      src={item.thumb}
+                      src={API_URL + "images/getImage/" + item.id}
                     />
                     <CCardText>
                       <CCardText>

@@ -17,6 +17,8 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+//Api
+import { API_URL } from "../util/Api";
 
 const TheHeaderDropdown = ({ user, reset }) => {
   let history = useHistory();
@@ -34,11 +36,13 @@ const TheHeaderDropdown = ({ user, reset }) => {
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
-          <CImg
-            src={user.avatar}
-            className="c-avatar-img"
-            alt="admin@bootstrapmaster.com"
-          />
+          {user !== null && user !== "" && (
+            <CImg
+              src={API_URL + "images/getYourAvatar/" + user.token}
+              className="c-avatar-img"
+              alt="admin@bootstrapmaster.com"
+            />
+          )}
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">

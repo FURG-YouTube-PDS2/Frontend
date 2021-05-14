@@ -45,6 +45,15 @@ const UploadEdit = ({ user, history }) => {
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
 
+    // const options = {
+    //   onUploadProgess: (progressEvent) => {
+    //     const { loaded, total } = progressEvent;
+    //     let percent = Math.floor((loaded * 100) / total);
+    //     // if (percent < 100) {
+    //     //   setState({ ...state, upload_percent: percent });
+    //     // }
+    //   },
+    // };
   };
 
   const Edit = async () => {
@@ -152,38 +161,59 @@ const UploadEdit = ({ user, history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      var data = { video_id: id, token: user.token };
-      getUploadVideo(data)
-        .then(function (data) {
-          var selecteds = data.videoData.tags.map((tag, index) => {
-            return { id: tag.id, value: tag.id, label: tag.name };
-          });
-          var recommend = data.rec.map((tag, index) => {
-            return { id: tag.id, value: tag.id, label: tag.name };
-          });
-          setState({
-            ...state,
-            fetched: true,
-            description: data.videoData.data.description,
-            title: data.videoData.data.title,
-            privacy: data.videoData.data.privacy,
-            image: data.videoData.data.thumb,
-            recommend,
-            selecteds,
-          });
-        })
-
-        .catch((err) => {
-          setState({ ...state, fetched: true });
-          alert("Houve um problema", "Por favor recarregue a pagina", [
+      if (user === null || user === "") {
+        alert(
+          "Houve um problema",
+          "Você não está logado para realizar essa ação por favor realize o login.",
+          [
             {
-              label: "Recarregar",
+              label: "Cancelar",
               onClick: () => {
-                window.location.reload();
+                history.push("/home");
               },
             },
-          ]);
-        });
+            {
+              label: "Login",
+              onClick: () => {
+                history.push("/login");
+              },
+            },
+          ]
+        );
+      } else {
+        var data = { video_id: id, token: user.token };
+        getUploadVideo(data)
+          .then(function (data) {
+            var selecteds = data.videoData.tags.map((tag, index) => {
+              return { id: tag.id, value: tag.id, label: tag.name };
+            });
+            var recommend = data.rec.map((tag, index) => {
+              return { id: tag.id, value: tag.id, label: tag.name };
+            });
+            setState({
+              ...state,
+              fetched: true,
+              description: data.videoData.data.description,
+              title: data.videoData.data.title,
+              privacy: data.videoData.data.privacy,
+              image: data.videoData.data.thumb,
+              recommend,
+              selecteds,
+            });
+          })
+
+          .catch((err) => {
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+            ]);
+          });
+      }
     }
   }, []);
 

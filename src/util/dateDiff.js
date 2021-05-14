@@ -1,4 +1,5 @@
 import moment from "moment";
+import "moment/locale/pt-br";
 
 export const diffDate = (dateOne, dateTwo) => {
   var momOne = moment(dateOne);
@@ -22,4 +23,9 @@ export const diffDate = (dateOne, dateTwo) => {
   } else {
     return "Há " + diffDur.years() + " Ano(s)";
   }
+};
+
+export const nowTime = () => {
+  moment.locale("pt-br");
+  return moment().format("LT");
 };

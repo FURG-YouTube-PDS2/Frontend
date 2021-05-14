@@ -46,7 +46,6 @@ const Login = ({ history, setToken }) => {
     //   email: "davi@furg.br",
     //   password: "senha",
     // };
-    console.log(data);
     if (!data.email || !data.password) {
       setState({
         ...state,
@@ -56,9 +55,6 @@ const Login = ({ history, setToken }) => {
     } else {
       loginUser(data)
         .then(function (data) {
-          //console.log(user);
-          // console.log(data.token);
-          // console.log(data);
           setToken(data.token);
           history.push("/home");
         })
