@@ -28,7 +28,7 @@ import CIcon from "@coreui/icons-react";
 //Style
 import "../styles/nintube.css";
 //API
-import { getVideo, getPlaylistView } from "../../../util/Api";
+import { getVideo, getPlaylistView, API_URL } from "../../../util/Api";
 import ReactPlayer from "react-player";
 import { useWindowSize } from "@react-hook/window-size/throttled";
 import screenfull from "screenfull";
@@ -693,7 +693,7 @@ const Player = ({ url = "" }) => {
                           borderBottom: "1px solid black",
                           borderRadius: "10px",
                         }}
-                        src={video.thumb}
+                        src={API_URL + "images/getImage/" + video.video_id}
                       />
                       <CCardText>
                         <h6 style={{ color: "black" }}>

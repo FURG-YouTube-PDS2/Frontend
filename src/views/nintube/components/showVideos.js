@@ -24,7 +24,7 @@ import CIcon from "@coreui/icons-react";
 //Componets
 import NoVideo from "./noVideo";
 //API
-import { Registrations } from "../../../util/Api";
+import { Registrations, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "./componentStyle.css";
@@ -109,7 +109,7 @@ const ShowVideos = ({ user }) => {
                   }}
                 >
                   <CImg
-                    src={channel.avatar}
+                    src={API_URL + "images/getImage/" + channel.id}
                     style={{
                       // width: "100%", height: "100%",
                       width: "80px",
@@ -158,7 +158,7 @@ const ShowVideos = ({ user }) => {
                   }}
                 >
                   <CImg
-                    src={channel.avatar}
+                    src={API_URL + "images/getAvatar/" + channel.id}
                     style={{ width: "80px", height: "80px", cursor: "pointer" }}
                     className="c-avatar-img"
                     onClick={() => history.push("/channel/" + channel.id)}
@@ -193,7 +193,7 @@ const ShowVideos = ({ user }) => {
                         borderBottomLeftRadius: "10px",
                         borderBottomRightRadius: "10px",
                       }}
-                      src={item.thumb}
+                      src={API_URL + "images/getImage/" + item.id}
                     />
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>

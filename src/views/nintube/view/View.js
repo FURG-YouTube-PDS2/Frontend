@@ -537,7 +537,7 @@ const View = ({ user, history }) => {
                 <div style={{ width: "7%", height: "100%" }}>
                   <img
                     onClick={() => handleClick("channel", state.video.owner_id)}
-                    src={state.video.owner_avatar}
+                    src={API_URL + "images/getAvatar/" + state.video.owner_id}
                     style={{ borderRadius: "40%", cursor: "pointer" }}
                     width="44"
                     height="44"

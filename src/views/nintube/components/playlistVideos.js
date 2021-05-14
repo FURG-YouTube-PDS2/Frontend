@@ -29,6 +29,7 @@ import {
   removeVideoFromPlaylist,
   deletPlaylist,
   editPlaylist,
+  API_URL,
 } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 import { alert } from "../../../util/alertApi";
@@ -323,7 +324,7 @@ const PlaylistVideos = ({ user }) => {
                     borderRadius: "10px",
                   }}
                   //
-                  src={item.thumb}
+                  src={API_URL + "images/getImage/" + item.video_id}
                 />
                 <span name={"viewPlaylist_" + id + "_" + item.video_id} row>
                   <h5
@@ -443,7 +444,7 @@ const PlaylistVideos = ({ user }) => {
                     borderRadius: "10px",
                     cursor: "pointer",
                   }}
-                  src={state.videos[0].thumb}
+                  src={API_URL + "images/getImage/" + state.videos[0].video_id}
                   onClick={() =>
                     history.push(
                       "/viewPlaylist/" + id + "/" + state.videos[0].video_id

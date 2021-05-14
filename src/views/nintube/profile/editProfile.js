@@ -39,7 +39,7 @@ import CIcon from "@coreui/icons-react";
 import Crop from "../crop/Crop";
 //API
 import { alert } from "../../../util/alertApi";
-import { getProfile, editProfile } from "../../../util/Api";
+import { getProfile, editProfile, API_URL } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 //Style
@@ -268,7 +268,7 @@ const Profile = ({ user }) => {
                         />
                         <span>Selecione seu Avatar</span>
                         <img
-                          src={state.user.avatar}
+                          src={API_URL + "images/getAvatar/" + state.user.id}
                           style={{
                             width: "55px",
                             marginLeft: "27px",
@@ -599,7 +599,7 @@ const Profile = ({ user }) => {
                     Selecione seu Avatar
                     <img
                       style={{ width: "50px" }}
-                      src={state.user.avatar}
+
                       alt="avatar"
                     ></img>
                     <CInput

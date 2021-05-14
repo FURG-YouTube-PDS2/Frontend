@@ -22,7 +22,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //API
-import { getPlaylists } from "../../../util/Api";
+import { getPlaylists, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "../components/componentStyle.css";
@@ -110,9 +110,10 @@ const AllPlaylists = ({ user }) => {
                         borderBottomRightRadius: "10px",
                       }}
                       src={
-                        item.thumb === "undefined"
+                        API_URL + "images/getImage/" + item.video_id ===
+                        "undefined"
                           ? "https://i.ytimg.com/img/no_thumbnail.jpg"
-                          : item.thumb
+                          : API_URL + "images/getImage/" + item.video_id
                       }
                     />
                   </div>

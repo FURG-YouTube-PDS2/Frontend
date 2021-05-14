@@ -209,7 +209,7 @@ const Profile = ({ user }) => {
                         marginLeft: "27px",
                         borderRadius: "50%",
                       }}
-                      src={state.user.avatar}
+                      src={API_URL + "images/getAvatar/" + state.user.id}
                       // alt="avatar"
                     />
                   </div>

@@ -21,7 +21,7 @@ import CIcon from "@coreui/icons-react";
 import "../components/componentStyle.css";
 //API
 import data from "./data";
-import { myVideos, deletVideo } from "../../../util/Api";
+import { myVideos, deletVideo, API_URL } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 
 const fields = [
@@ -197,7 +197,7 @@ const Studio = ({ user, history }) => {
                           borderRadius: "10px",
                         }}
                         onClick={() => history.push("/view/" + item.id)}
-                        src={item.thumb}
+                        src={API_URL + "images/getImage/" + item.id}
                       />
                     </td>
                   ),

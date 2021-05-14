@@ -24,7 +24,7 @@ import CIcon from "@coreui/icons-react";
 //Compoment
 import NoVideo from "./noVideo";
 //API
-import { Library } from "../../../util/Api";
+import { Library, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "./componentStyle.css";
@@ -116,7 +116,7 @@ const LibraryPlaylists = ({ user }) => {
                         borderBottomLeftRadius: "10px",
                         borderBottomRightRadius: "10px",
                       }}
-                      src={item.thumb}
+                      src={API_URL + "images/getImage/" + item.video_id}
                     />
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
@@ -178,7 +178,7 @@ const LibraryPlaylists = ({ user }) => {
                         borderBottomLeftRadius: "10px",
                         borderBottomRightRadius: "10px",
                       }}
-                      src={item.thumb}
+                      src={API_URL + "images/getImage/" + item.video_id}
                     />
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
@@ -243,9 +243,10 @@ const LibraryPlaylists = ({ user }) => {
                             borderBottomRightRadius: "10px",
                           }}
                           src={
-                            item.thumb === "undefined"
+                            API_URL + "images/getImage/" + item.video_id ===
+                            "undefined"
                               ? "https://i.ytimg.com/img/no_thumbnail.jpg"
-                              : item.thumb
+                              : API_URL + "images/getImage/" + item.video_id
                           }
                         />
                       </div>

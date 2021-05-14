@@ -28,7 +28,7 @@ import CIcon from "@coreui/icons-react";
 //Style
 import "./componentStyle.css";
 //API
-import { getRecs } from "../../../util/Api";
+import { getRecs, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
@@ -193,14 +193,15 @@ const StackVideo = ({ user, video_id }) => {
                   <CImg
                     onClick={() => handleClick("view", item.id)}
                     style={{
-                      width: "25%",
+                      height: "50px",
+                      width: "22%",
                       cursor: "pointer",
                       float: "left",
                       marginRight: "1%",
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.thumb}
+                    src={API_URL + "images/getImage/" + item.id}
                   />
                   <CCardText>
                     <CCardText>
