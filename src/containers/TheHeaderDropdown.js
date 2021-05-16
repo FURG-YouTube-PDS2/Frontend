@@ -40,7 +40,7 @@ const TheHeaderDropdown = ({ user, reset }) => {
             <CImg
               src={API_URL + "images/getYourAvatar/" + user.token}
               className="c-avatar-img"
-              alt="admin@bootstrapmaster.com"
+              alt={user.username}
             />
           )}
         </div>

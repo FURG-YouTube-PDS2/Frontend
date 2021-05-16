@@ -23,7 +23,7 @@ import Player from "../components/Player";
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
 //API
-import { getUploadVideo, editVideo, getRec } from "../../../util/Api";
+import { API_URL, getUploadVideo, editVideo, getRec } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
@@ -196,7 +196,7 @@ const UploadEdit = ({ user, history }) => {
               description: data.videoData.data.description,
               title: data.videoData.data.title,
               privacy: data.videoData.data.privacy,
-              image: data.videoData.data.thumb,
+              image: API_URL+"images/getImage/"+id,
               recommend,
               selecteds,
             });
