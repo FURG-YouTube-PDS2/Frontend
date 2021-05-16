@@ -365,7 +365,7 @@ const View = ({ user, history }) => {
                 >
                   {state.tags.map((item, index) => (
                     <a
-                      style={{ color: "lightblue" }}
+                      style={{ color: "lightblue", cursor: "pointer" }}
                       onClick={() => shared(item.name)}
                     >
                       #{item.name}{" "}
