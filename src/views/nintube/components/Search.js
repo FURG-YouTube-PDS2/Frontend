@@ -32,7 +32,7 @@ import CIcon from "@coreui/icons-react";
 import "../styles/nintube.css";
 import "./componentStyle.css";
 //API
-import { SearchAll, Inscribe } from "../../../util/Api";
+import { SearchAll, Inscribe, API_URL } from "../../../util/Api";
 import NoVideo from "./noVideo";
 import { diffDate } from "../../../util/dateDiff";
 
@@ -49,12 +49,15 @@ const Search = ({ user }) => {
     type: type,
     videos: [],
     channels: [],
+    playlists: [],
   });
 
   let history = useHistory();
 
-  const handleClick = (route, id) => {
-    history.push("/" + route + "/" + id);
+  const handleClick = (route, id, playlist = 0) => {
+    playlist
+      ? history.push("/" + route + "/" + playlist + "/" + id)
+      : history.push("/" + route + "/" + id);
   };
 
   const handleKeys = (e) => {
@@ -64,7 +67,7 @@ const Search = ({ user }) => {
   };
 
   const doSearch = () => {
-    handleClick("search",state.searchText)
+    handleClick("search", state.searchText);
     var data = {
       input: state.searchText,
       type: state.type,
@@ -74,12 +77,14 @@ const Search = ({ user }) => {
     // data = searchSimulator()
     // setState({ ...state, videos:data.videos, channels: data.channels});
     SearchAll(data).then(function (data) {
+      console.log(data)
       setState({
         ...state,
         fetched: true,
         videos: data.videos,
+        playlists:data.playlists,
         channels: data.channels,
-        fetched:true
+        fetched: true,
       });
     });
   };
@@ -98,7 +103,7 @@ const Search = ({ user }) => {
       } else {
         channels[index].subscribers -= 1;
       }
-      setState({ ...state, channels});
+      setState({ ...state, channels });
     } else {
       alert("Login", "Você não está logado!");
     }
@@ -160,9 +165,9 @@ const Search = ({ user }) => {
                           width: "75px",
                         }}
                         onClick={() => handleClick("channel", item.id)}
-                        src={item.avatar}
+                        src={API_URL + "images/getAvatar/" + item.id}
                         className="c-avatar-img"
-                        alt="admin@bootstrapmaster.com"
+                        alt={item.name}
                       />
                     </div>
                   </CCardBody>
@@ -213,6 +218,88 @@ const Search = ({ user }) => {
         </CRow>
         <CRow>
           <CCol sm="12">
+          {state.playlists.map((item, index) => (
+                <CCol style={{width:"300px"}} >
+                  <CCard style={{ border: "2px solid #B3272C" }}>
+                    <div
+                      // className="style-scope ytd-grid-playlist-renderer"
+                      style={{
+                        position: "relative",
+                        width: "266.3px",
+                        height: "100%",
+                      }}
+                    >
+                      <div
+                      // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
+                      >
+                        <CImg
+                          onClick={() =>
+                            handleClick("viewPlaylist", item.video_id, item.pl_id)
+                          }
+                          style={{
+                            height: "150px",
+                            width: "266.3px",
+                            cursor: "pointer",
+                            float: "left",
+                            marginRight: "1%",
+                            borderBottom: "1px solid black"
+                          }}
+                          src={
+                            API_URL + "images/getImage/" + item.video_id
+                          }
+                        />
+                      </div>
+                      <div
+                        // className="style-scope ytd-playlist-thumbnail"
+                        style={{
+                          width: "50%",
+                          height: "100%",
+                          fontSize: "20px",
+                          color: "white",
+                          position: "absolute",
+                          right: 0,
+                          top: 0,
+                          backgroundColor: "rgb(8 8 8 / 80%)",
+
+                          display: "flex",
+                        }}
+                      >
+                        <div
+                          className="text-center"
+                          style={{
+                            // marginBottom: "auto",
+                            // marginTop: "auto",
+                            margin: "auto",
+                            // flexDirection: "row",
+                          }}
+                        >
+                          <span>{item.video_count}</span>
+                          <div>
+                            <CIcon size="2xl" name="cilMenu"></CIcon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <CCardBody style={{ fontSize: "80%" }}>
+                        <h3
+                          onClick={() =>
+                            handleClick("viewPlaylist", item.video_id, item.pl_id)
+                          }
+                          style={{ fontSize: "120%", cursor: "pointer" }}
+                        >
+                          {item.name}
+                        </h3>{" "}
+                        <span style={{wordWrap: "break-word"}}>{item.name}</span>
+                      </CCardBody>
+                    </div>
+                  </CCard>
+                  </CCol>
+              ))}
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol sm="12">
             {state.videos.map((item, index) => (
               <CCard
                 style={{
@@ -225,13 +312,15 @@ const Search = ({ user }) => {
                     onClick={() => handleClick("view", item.id)}
                     style={{
                       height: "150px",
+                      weigth: "264px",
                       cursor: "pointer",
                       float: "left",
                       marginRight: "1%",
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
+                      objectFit: "fill"
                     }}
-                    src={item.thumb}
+                    src={API_URL + "images/getImage/" + item.id}
                   />
                   <CCardText>
                     <CCardText>
@@ -264,8 +353,8 @@ const Search = ({ user }) => {
                         <div className="c-avatar">
                           <CImg
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("channel", item.id)}
-                            src={item.avatar}
+                            onClick={() => handleClick("channel", item.channel_id)}
+                            src={API_URL + "images/getAvatar/" + item.channel_id}
                             className="c-avatar-img"
                             alt="admin@bootstrapmaster.com"
                           />
@@ -290,7 +379,9 @@ const Search = ({ user }) => {
           </CCol>
         </CRow>
       </CContainer>
-      {(state.fetched && state.channels.length == 0 && state.videos.length == 0) && <NoVideo/>}
+      {state.fetched &&
+        state.channels.length == 0 &&
+        state.videos.length == 0 && <NoVideo />}
     </div>
   );
 };

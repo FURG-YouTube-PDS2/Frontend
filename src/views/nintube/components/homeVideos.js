@@ -23,7 +23,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //API
-import { feedVideos } from "../../../util/Api";
+import { feedVideos, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 import { alert } from "../../../util/alertApi";
 //Style
@@ -41,12 +41,10 @@ const HomeVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      
       var data = {
         numberSkip: 0,
-        token: (user) ? user.token : ''
+        token: user ? user.token : "",
       };
-      
 
       feedVideos(data)
         .then(function (data) {
@@ -69,7 +67,6 @@ const HomeVideos = ({ user }) => {
             // },
           ]);
         });
-
     }
   }, []);
   return (
@@ -97,7 +94,7 @@ const HomeVideos = ({ user }) => {
                     borderBottomLeftRadius: "10px",
                     borderBottomRightRadius: "10px",
                   }}
-                  src={item.thumb}
+                  src={API_URL + "images/getImage/" + item.id}
                 />
                 <div>
                   <CCardBody
@@ -108,7 +105,7 @@ const HomeVideos = ({ user }) => {
                       <CImg
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("channel", item.id)}
-                        src={item.avatar}
+                        src={API_URL + "images/getAvatar/" + item.channel_id}
                         className="c-avatar-img"
                         alt="admin@bootstrapmaster.com"
                       />

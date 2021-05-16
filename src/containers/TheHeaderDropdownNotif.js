@@ -13,7 +13,7 @@ import {
   CImg,
   CProgress,
 } from "@coreui/react";
-import { getNotf, readNot } from "../util/Api";
+import { getNotf, readNot, API_URL } from "../util/Api";
 import { diffDate } from "../util/dateDiff";
 import CIcon from "@coreui/icons-react";
 
@@ -119,7 +119,10 @@ const TheHeaderDropdownNotif = ({ user }) => {
                   </div>
                   <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
-                      <CImg src={item.thumb} style={{ width: "100%" }} />
+                      <CImg
+                        src={API_URL + "images/getImage/" + item.video_id}
+                        style={{ width: "100%", height: "70px" }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -159,7 +162,10 @@ const TheHeaderDropdownNotif = ({ user }) => {
                   </div>
                   <div className=" ml-1 float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
-                      <CImg src={item.thumb} style={{ width: "100%" }} />
+                      <CImg
+                        src={API_URL + "/images/getImage/" + item.video_id}
+                        style={{ width: "100%", height: "70px" }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -183,7 +189,10 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
-                      <CImg src={item.avatar} className="c-avatar-img" />
+                      <CImg
+                        src={API_URL + "/images/getImage/" + item.video_id}
+                        className="c-avatar-img"
+                      />
                     </div>
                   </div>
                 </div>
@@ -200,7 +209,10 @@ const TheHeaderDropdownNotif = ({ user }) => {
                   </div>
                   <div className=" ml-1 float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
-                      <CImg src={item.thumb} style={{ width: "100%" }} />
+                      <CImg
+                        src={API_URL + "/images/getImage/" + item.video_id}
+                        style={{ width: "100%", height: "70px" }}
+                      />
                     </div>
                   </div>
                 </div>

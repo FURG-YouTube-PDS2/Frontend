@@ -26,7 +26,7 @@ const Library = ({ history, user }) => {
   }, []);
   return (
     <div>
-      {user != null ? (
+      {user !== null && user !== "" ? (
         <>
           <LibraryPlaylists />
           {/* <h4>Histórico</h4>

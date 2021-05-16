@@ -60,7 +60,8 @@ const Login = ({ history, setUser }) => {
           if (data.status === 1) {
             var user = {
               token: data.token,
-              avatar: data.avatar,
+              id: data.id,
+              username: data.username,
             };
             setUser(user);
             history.push("/home");

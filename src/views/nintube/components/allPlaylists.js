@@ -22,7 +22,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //API
-import { getPlaylists } from "../../../util/Api";
+import { getPlaylists, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "../components/componentStyle.css";
@@ -42,10 +42,18 @@ const AllPlaylists = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        id_target: id !== "0" && id !== undefined ? id : "",
-        token: user.token,
-      };
+      if (user !== null && user !== "") {
+        var data = {
+          id_target: id !== "0" && id !== undefined ? id : "",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          id_target: id !== "0" && id !== undefined ? id : "",
+          token: "",
+        };
+      }
+
       getPlaylists(data)
         .then(function (data) {
           setState({ ...state, fetched: true, videos: data });
@@ -102,9 +110,10 @@ const AllPlaylists = ({ user }) => {
                         borderBottomRightRadius: "10px",
                       }}
                       src={
-                        item.thumb === "undefined"
+                        API_URL + "images/getImage/" + item.video_id ===
+                        "undefined"
                           ? "https://i.ytimg.com/img/no_thumbnail.jpg"
-                          : item.thumb
+                          : API_URL + "images/getImage/" + item.video_id
                       }
                     />
                   </div>

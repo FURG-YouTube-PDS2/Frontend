@@ -34,7 +34,7 @@ import ChannelSearch from "./channelSearch";
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
 //API
-import { Inscribe, channelData } from "../../../util/Api";
+import { Inscribe, channelData, API_URL } from "../../../util/Api";
 
 const Channel = ({ user }) => {
   let { id } = useParams();
@@ -47,10 +47,17 @@ const Channel = ({ user }) => {
   });
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        user_id: id !== "0" ? id : "",
-        token: user.token,
-      };
+      if (user !== null && user !== "") {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          user_id: id !== "0" ? id : "",
+          token: "",
+        };
+      }
       // changeContent("video");
       channelData(data)
         .then(function (data) {
@@ -138,13 +145,6 @@ const Channel = ({ user }) => {
         </div>
       )}
       <header>
-        {/* <CImg
-          style={{ width: "100%" }}
-          src={
-            "https://cdn.discordapp.com/attachments/300483456440336385/775913742943911936/unknown.png"
-          }
-        ></CImg> */}
-
         <CCard style={{ height: "100%" }}>
           <CCardBody style={{ width: "100%" }}>
             <div>
@@ -168,7 +168,12 @@ const Channel = ({ user }) => {
                       }}
                     >
                       <CImg
-                        src={state.channel.avatar}
+                        src={
+                          id === "0"
+                            ? API_URL + "images/getYourAvatar/" + user.token
+                            : API_URL + "images/getAvatar/" + id
+                        }
+                        // src={state.channel.avatar}
                         className="c-avatar-img"
                       />
                     </div>
@@ -205,7 +210,7 @@ const Channel = ({ user }) => {
                     </div>
                   </div>
                 </CCol>
-                <CCol sm="3" sm="3" style={{ display: "flex" }}>
+                <CCol sm="3" style={{ display: "flex" }}>
                   <div
                     style={{ width: "100%", height: "50%", marginTop: "auto" }}
                   >
@@ -241,38 +246,42 @@ const Channel = ({ user }) => {
                     // alignItems: "center",
                   }}
                 >
-                  {state.channel.is_sub === false && !state.channel.is_owner && (
-                    <div
-                      style={{
-                        marginLeft: "auto",
-                        marginTop: "auto",
-                      }}
-                    >
-                      <CButton
-                        id="inscribe"
-                        class="inscribe"
-                        onClick={() => Change(true)}
+                  {state.channel.is_sub === false &&
+                    !state.channel.is_owner &&
+                    state.fetched && (
+                      <div
+                        style={{
+                          marginLeft: "auto",
+                          marginTop: "auto",
+                        }}
                       >
-                        Inscrever-se
-                      </CButton>
-                    </div>
-                  )}
-                  {state.channel.is_sub === true && !state.channel.is_owner && (
-                    <div
-                      style={{
-                        marginLeft: "auto",
-                        marginTop: "auto",
-                      }}
-                    >
-                      <CButton
-                        id="inscribe"
-                        class="registered"
-                        onClick={() => Change(false)}
+                        <CButton
+                          id="inscribe"
+                          class="inscribe"
+                          onClick={() => Change(true)}
+                        >
+                          Inscrever-se
+                        </CButton>
+                      </div>
+                    )}
+                  {state.channel.is_sub === true &&
+                    !state.channel.is_owner &&
+                    state.fetched && (
+                      <div
+                        style={{
+                          marginLeft: "auto",
+                          marginTop: "auto",
+                        }}
                       >
-                        Inscrito
-                      </CButton>
-                    </div>
-                  )}
+                        <CButton
+                          id="inscribe"
+                          class="registered"
+                          onClick={() => Change(false)}
+                        >
+                          Inscrito
+                        </CButton>
+                      </div>
+                    )}
                 </CCol>
               </CRow>
             </div>
@@ -312,8 +321,16 @@ const Channel = ({ user }) => {
         </div>
       )}
       {/* {state.content === 1 ? <h1>Inicio</h1> : null} */}
-      {state.content === 2 ? <ChannelVideos /> : null}
-      {state.content === 3 ? <AllPlaylists /> : null}
+      <div hidden={state.content !== 2}>
+        {" "}
+        <ChannelVideos />{" "}
+      </div>
+      <div hidden={state.content !== 3}>
+        {" "}
+        <AllPlaylists />
+      </div>
+      {/* {state.content === 2 ? <ChannelVideos /> : null}
+      {state.content === 3 ? <AllPlaylists /> : null} */}
       {/* {state.content === 4 ? <h1>Sobre</h1> : null} */}
       {state.content === 5 ? (
         <ChannelSearch search={state.search} channel_id={id} />

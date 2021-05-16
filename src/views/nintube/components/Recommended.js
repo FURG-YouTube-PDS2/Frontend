@@ -28,7 +28,7 @@ import CIcon from "@coreui/icons-react";
 //Style
 import "./componentStyle.css";
 //API
-import { getRecs } from "../../../util/Api";
+import { getRecs, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
@@ -129,12 +129,11 @@ const videos = [
   },
 ];
 
-const StackVideo = ({ user }) => {
+const StackVideo = ({ user, video_id }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     videos: [],
     fetched: false,
-    videos: [],
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -149,6 +148,7 @@ const StackVideo = ({ user }) => {
       getRecs(data)
         .then(function (data) {
           setState({ ...state, fetched: true, videos: data });
+          video_id(data[0].id);
         })
         .catch((err) => {
           setState({ ...state, fetched: true });
@@ -193,14 +193,15 @@ const StackVideo = ({ user }) => {
                   <CImg
                     onClick={() => handleClick("view", item.id)}
                     style={{
-                      width: "25%",
+                      height: "50px",
+                      width: "22%",
                       cursor: "pointer",
                       float: "left",
                       marginRight: "1%",
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.thumb}
+                    src={API_URL + "images/getImage/" + item.id}
                   />
                   <CCardText>
                     <CCardText>
@@ -237,4 +238,7 @@ const StackVideo = ({ user }) => {
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(StackVideo));

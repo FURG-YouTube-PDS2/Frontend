@@ -51,7 +51,7 @@ const TheHeader = ({ user, setuser }) => {
     message: "",
     email: "",
     password: "",
-    search:""
+    search: "",
   });
   const [searchBar, setSearchBar] = useState(true);
   let location = useLocation();
@@ -112,10 +112,10 @@ const TheHeader = ({ user, setuser }) => {
 
   const dark = "dark";
 
-  const handleKeys = e => {      
-    if (e.keyCode === 13) {      
-        doSearch();
-    }  
+  const handleKeys = (e) => {
+    if (e.keyCode === 13) {
+      doSearch();
+    }
   };
   const doSearch = () => {
     history.push("/search/"+state.search)

@@ -28,7 +28,7 @@ import ReactPlayer from "react-player";
 import { useWindowSize } from "@react-hook/window-size/throttled";
 import screenfull from "screenfull";
 
-const Player = ({ url = "" }) => {
+const Player = ({ url = "", playRecommended = "" }) => {
   let { id } = useParams();
   const ref = React.createRef();
   const [window_width, window_height] = useWindowSize({ fps: 60 });
@@ -68,6 +68,9 @@ const Player = ({ url = "" }) => {
   const handleProgress = (state) => {
     if (!seeking) {
       setPlayed(state.played);
+      if (state.played === 1 && playRecommended !== "") {
+        playRecommended();
+      }
     }
   };
 
@@ -304,6 +307,7 @@ const Player = ({ url = "" }) => {
             </div>
             <div
               style={{
+                width: "30%",
                 marginLeft: "auto",
                 display: "flex",
                 justifyContent: "center",
@@ -312,22 +316,21 @@ const Player = ({ url = "" }) => {
               }}
             >
               <CButton onClick={handleClickFullscreen}>Fullscreen</CButton>
-              Velocidade
-              <CSelect
-                style={{ width: "30%" }}
-                onChange={(e) => handleSetPlaybackRate(e)}
-              >
-                <option value="0.25">0.25</option>
-                <option value="0.5">0.5</option>
-                <option value="0.75">0.75</option>
-                <option value="1" selected>
-                  1
-                </option>
-                <option value="1.25">1.25</option>
-                <option value="1.5">1.5</option>
-                <option value="1.75">1.75</option>
-                <option value="2">2</option>
-              </CSelect>
+              <span style={{ marginRight: "1%" }}> Velocidade </span>
+              <div>
+                <CSelect onChange={(e) => handleSetPlaybackRate(e)}>
+                  <option value="0.25">0.25</option>
+                  <option value="0.5">0.5</option>
+                  <option value="0.75">0.75</option>
+                  <option value="1" selected>
+                    1
+                  </option>
+                  <option value="1.25">1.25</option>
+                  <option value="1.5">1.5</option>
+                  <option value="1.75">1.75</option>
+                  <option value="2">2</option>
+                </CSelect>
+              </div>
             </div>
           </div>
         </div>

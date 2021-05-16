@@ -174,7 +174,7 @@ const Comments = ({ user }) => {
               nickname: data.username,
               comment: data.text,
               date: diffDate(new Date(), data.created_at),
-              src: data.src,
+              src: API_URL + "images/getAvatar/" + user.token,
               reply_id: data.reply_id,
               likes: 0,
               liked: 0,
@@ -222,7 +222,7 @@ const Comments = ({ user }) => {
                 nickname: data.username,
                 comment: data.text,
                 date: diffDate(new Date(), data.created_at),
-                src: data.src,
+                src: API_URL + "images/getYourAvatar/" + user.token,
                 reply_id: data.reply_id,
                 likes: 0,
                 liked: 0,
@@ -262,7 +262,7 @@ const Comments = ({ user }) => {
                 nickname: data.username,
                 comment: data.text,
                 date: diffDate(new Date(), data.created_at),
-                src: data.src,
+                src: API_URL + "images/getYourAvatar/" + user.token,
                 reply_id: data.reply_id,
                 likes: 0,
                 liked: 0,
@@ -468,7 +468,7 @@ const Comments = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      if (!user.token) {
+      if (!user) {
         var req = {
           name: "default",
         };
@@ -482,7 +482,7 @@ const Comments = ({ user }) => {
           state.avatar = data;
         });
       } else {
-        state.avatar = user.avatar;
+        state.avatar = API_URL + "images/getYourAvatar/" + user.token;
         var data = {
           numberSkip: 0,
           video_id: id,
@@ -504,7 +504,7 @@ const Comments = ({ user }) => {
                 nickname: data[i].nickname,
                 comment: data[i].comment,
                 date: diffDate(today, data[i].date),
-                src: data[i].src,
+                src: API_URL + "images/getAvatar/" + data[i].user_id,
                 reply_id: data[i].reply_id,
                 likes: data[i].likes,
                 liked: data[i].liked,
@@ -524,7 +524,7 @@ const Comments = ({ user }) => {
                 nickname: data[i].nickname,
                 comment: data[i].comment,
                 date: diffDate(today, data[i].date),
-                src: data[i].src,
+                src: API_URL + "images/getAvatar/" + data[i].user_id,
                 reply_id: data[i].reply_id,
                 likes: data[i].likes,
                 liked: data[i].liked,

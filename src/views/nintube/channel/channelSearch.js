@@ -32,7 +32,7 @@ import CIcon from "@coreui/icons-react";
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
 //API
-import { SearchAll, Inscribe } from "../../../util/Api";
+import { SearchAll, Inscribe, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 import NoVideo from "../components/noVideo";
 
@@ -118,7 +118,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.thumb}
+                    src={API_URL + "images/getImage/" + item.id}
                   />
                   <CCardText>
                     <CCardText>
@@ -155,7 +155,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
           </CCol>
         </CRow>
       </CContainer>
-      {(state.fetched && state.channels.length == 0) && <NoVideo/>}
+      {state.fetched && state.channels.length == 0 && <NoVideo />}
     </div>
   );
 };
