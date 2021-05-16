@@ -490,7 +490,7 @@ const Comments = ({ user }) => {
         };
       }
 
-      getComment(data, user.token)
+      getComment(data)
         .then(function (data) {
           var listAux = Array();
           var today = new Date();
