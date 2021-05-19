@@ -421,7 +421,7 @@ const PlaylistVideos = ({ user }) => {
                           {" "}
                           {state.playlist.name}
                         </span>
-                        {state.playlist.is_owner && (
+                        {state.playlist.is_owner && !state.playlist.fixed && (
                           <CButton
                             color="btn btn-ghost-light"
                             title="Editar"
@@ -471,7 +471,7 @@ const PlaylistVideos = ({ user }) => {
                         state.playlist.created_at
                       )}`}
                     </span>
-                    {state.playlist.is_owner && (
+                    {state.playlist.is_owner && !state.playlist.fixed && (
                       <CButton
                         style={{
                           marginLeft: "1%",
@@ -503,6 +503,20 @@ const PlaylistVideos = ({ user }) => {
                         )}
                       </CButton>
                     )}
+                    <div
+                      style={{
+                        marginLeft: "1%",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                      }}
+                    >
+                      {state.playlist.fixed && (
+                        <CIcon
+                          name="cilLockLocked"
+                          // size="lg"
+                        />
+                      )}
+                    </div>
                     {state.change && state.playlist.is_owner && (
                       <div style={{ marginLeft: "auto" }}>
                         <CButton color="info" onClick={() => Edit()}>
@@ -513,7 +527,7 @@ const PlaylistVideos = ({ user }) => {
                   </p>
                   {/* <span style={{ cursor: "pointer" }}> Teste</span>{" "} */}
                 </CCardText>{" "}
-                {state.playlist.is_owner && (
+                {state.playlist.is_owner && !state.playlist.fixed && (
                   <div style={{ display: "flex" }}>
                     <div style={{ marginLeft: "auto", marginRight: "auto" }}>
                       <CButton

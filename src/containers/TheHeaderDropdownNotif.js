@@ -24,6 +24,7 @@ const TheHeaderDropdownNotif = ({ user }) => {
     nots: [],
     itemsCount: 0,
     fetched: false,
+    emoji: "¯\\_(ツ)_/¯",
   });
 
   const handleClick = (route, id) => {
@@ -82,6 +83,62 @@ const TheHeaderDropdownNotif = ({ user }) => {
         <CDropdownItem header tag="div" color="dark">
           <strong style={{ color: "white" }}>Notificações</strong>
         </CDropdownItem>
+        {state.nots.length === 0 && (
+          <CDropdownItem>
+            <div className="message">
+              <div className="pt-2 mr-2 float-left">
+                <div
+                  style={{
+                    verticalAlign: "center",
+                    display: "flex",
+                    height: "100%",
+                  }}
+                >
+                  <div className="c-avatar">
+                    &nbsp;
+                    <CImg
+                      src="https://cdn.discordapp.com/attachments/300483456440336385/844601759464685638/default.png"
+                      className="c-avatar-img"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    width: "300px",
+                    height: "100px",
+                    verticalAlign: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      textAlign: "center",
+                      fontSize: "60px",
+                      width: "100%",
+                    }}
+                  >
+                    {state.emoji}
+                  </p>
+
+                  <div className="small text-muted text-truncate">
+                    {diffDate(new Date(), new Date())}
+                  </div>
+                </div>
+                <div className="ml-1   float-right" style={{ width: "27%" }}>
+                  <div style={{ width: "100%" }}>
+                    &nbsp;
+                    <CImg
+                      src="https://cdn.discordapp.com/attachments/300483456440336385/844602106858045440/banner_3.png"
+                      style={{ width: "150px", height: "120px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CDropdownItem>
+        )}
+
         {state.nots.map((item, index) => (
           <CDropdownItem onClick={() => handleClick("view", item.video_id)}>
             {item.type === "like_comment" && (

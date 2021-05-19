@@ -77,7 +77,6 @@ const Search = ({ user }) => {
     // data = searchSimulator()
     // setState({ ...state, videos:data.videos, channels: data.channels});
     SearchAll(data).then(function (data) {
-      console.log(data);
       setState({
         ...state,
         fetched: true,
@@ -99,10 +98,13 @@ const Search = ({ user }) => {
       Inscribe(data)
         .then(function (data) {
           let channels = state.channels;
+
           channels[index].is_subscribed =
             channels[index].is_subscribed === "1" ? "0" : "1";
+
           if (channels[index].is_subscribed === "1") {
-            channels[index].subscribers += 1;
+            channels[index].subscribers =
+              parseInt(channels[index].subscribers) + 1;
           } else {
             channels[index].subscribers -= 1;
           }

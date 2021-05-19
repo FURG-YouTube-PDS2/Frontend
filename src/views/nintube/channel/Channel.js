@@ -29,7 +29,7 @@ import CIcon from "@coreui/icons-react";
 import ShowVideos from "../components/showVideos";
 import AllPlaylists from "../components/allPlaylists";
 import ChannelVideos from "./channelVideos";
-import ChannelSearch from "./channelSearch";
+import ChannelSearch from "./ChannelSearch";
 //Style
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
@@ -86,7 +86,6 @@ const Channel = ({ user }) => {
   const Change = (cond) => {
     if (user) {
       var data = { token: user.token, target_id: id };
-      console.log(cond);
       Inscribe(data)
         .then(function (data) {
           var channel = { ...state.channel };

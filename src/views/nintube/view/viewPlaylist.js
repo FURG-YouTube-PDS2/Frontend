@@ -93,6 +93,17 @@ const ViewPlaylist = ({ user, history }) => {
     }
   };
 
+  const callSave = () => {
+    if (user) {
+      setState({
+        ...state,
+        playlistComp: <SavePlaylist video_id={id} kill={closeSavePlaylist} />,
+      });
+    } else {
+      alert("Ops...", "Tens que estar logado para salvar o video");
+    }
+  };
+
   const Liked = (liked) => {
     if (user) {
       if (!state.video.owner) {
@@ -169,7 +180,7 @@ const ViewPlaylist = ({ user, history }) => {
         newLiked(data).then(function (data) {});
       }
     } else {
-      alert("Ops..", "Tens que tar logado para curtir um video");
+      alert("Ops...", "Tens que estar logado para curtir um video");
     }
 
     // });
@@ -275,7 +286,7 @@ const ViewPlaylist = ({ user, history }) => {
           });
         }
       } else {
-        alert("Reporte", "Tens que estar logado pra reportar");
+        alert("Reporte", "Necessario login para o reportar");
       }
     } else {
       alert("Reporte", "Já tens um reporte nesse video");
@@ -332,8 +343,8 @@ const ViewPlaylist = ({ user, history }) => {
             video: data.pageData,
             tags: data.tags,
             status: data.status,
-            color_like: data.liked === 1 ? "green" : "white",
-            color_dislike: data.liked === -1 ? "red" : "white",
+            color_like: data.pageData.liked === 1 ? "green" : "white",
+            color_dislike: data.pageData.liked === -1 ? "red" : "white",
           });
         })
         .catch((err) => {
@@ -369,7 +380,7 @@ const ViewPlaylist = ({ user, history }) => {
                 >
                   {state.tags.map((item, index) => (
                     <a
-                      style={{ color: "lightblue" }}
+                      style={{ color: "lightblue", cursor: "pointer" }}
                       onClick={() => shared(item.name)}
                     >
                       #{item.name}{" "}
@@ -415,33 +426,20 @@ const ViewPlaylist = ({ user, history }) => {
                     </CButton>
                     <CButton
                       style={{ color: "white" }}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          playlistComp: (
-                            <SavePlaylist
-                              video_id={id}
-                              kill={closeSavePlaylist}
-                            />
-                          ),
-                        })
-                      }
+                      onClick={() => callSave()}
                     >
                       <CIcon name="cil-playlist-add" /> Salvar
                     </CButton>
                     <CButton
                       style={{ color: "white" }}
-                      onClick={() =>
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.href);
                         alert(
                           "Compartilhar",
-                          window.location.href,
-                          // "http://localhost:3000/#/viewPlaylist/" +
-                          //   playlistid +
-                          //   "/" +
-                          //   id,
+                          "Link copiado para área de transferência",
                           [{ label: "Fechar", onClick: "" }]
-                        )
-                      }
+                        );
+                      }}
                     >
                       <CIcon name="cil-share" /> Compartilhar
                     </CButton>

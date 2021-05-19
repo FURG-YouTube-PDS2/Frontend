@@ -313,7 +313,7 @@ const View = ({ user, history }) => {
           });
         }
       } else {
-        alert("Reporte", "Tens que estar logado pra reportar");
+        alert("Reporte", "Necessario login para reportar");
       }
     } else {
       alert("Reporte", "Já tens um reporte nesse video");
@@ -416,7 +416,6 @@ const View = ({ user, history }) => {
 
       watchVideo(data)
         .then(function (data) {
-          console.log(data);
           setState({
             ...state,
             video: data.pageData,
@@ -512,11 +511,7 @@ const View = ({ user, history }) => {
                     <CButton
                       style={{ color: "white" }}
                       onClick={() => {
-                        var copyText = document.querySelector(
-                          window.location.href
-                        );
-                        copyText.select();
-                        document.execCommand("copy");
+                        navigator.clipboard.writeText(window.location.href);
                         alert(
                           "Compartilhar",
                           "Link copiado para área de transferência",

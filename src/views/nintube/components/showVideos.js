@@ -210,7 +210,9 @@ const ShowVideos = ({ user }) => {
                         >
                           <span
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("channel", item.id)}
+                            onClick={() =>
+                              handleClick("channel", item.channel_id)
+                            }
                           >
                             {item.channel}
                           </span>
