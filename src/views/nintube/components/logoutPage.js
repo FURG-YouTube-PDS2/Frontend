@@ -12,6 +12,7 @@ import {
   CButton,
   CContainer,
   CRow,
+  CBreadcrumb,
   CCol,
 } from "@coreui/react";
 //Componets
@@ -25,19 +26,21 @@ function LogouPage() {
       <CContainer>
         <CRow className="justify-content-center">
           <CCol xs="12" md="5">
-            <CCard>
-              <CCardBody>
-                <h1>So é possivel visualizar está aba quando estiver logado</h1>
-                <div align="center">
-                  <CButton
-                    style={{ border: "1px solid red" }}
-                    onClick={() => history.push("/login")}
-                  >
-                    Login
-                  </CButton>
-                </div>
-              </CCardBody>
-            </CCard>
+            <CBreadcrumb>
+              <h1>Faça login para visualizar este conteúdo.</h1>
+              <div align="center" style={{ width: "100%" }}>
+                <CButton
+                  style={{
+                    border: "1px solid red",
+                    color: "white",
+                    width: "150px",
+                  }}
+                  onClick={() => history.push("/login")}
+                >
+                  Login
+                </CButton>
+              </div>
+            </CBreadcrumb>
           </CCol>
         </CRow>
       </CContainer>

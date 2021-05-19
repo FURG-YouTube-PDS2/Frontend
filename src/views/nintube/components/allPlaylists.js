@@ -35,10 +35,14 @@ const AllPlaylists = ({ user }) => {
     today: new Date(),
   });
   let history = useHistory();
-  const handleClick = (route, id, playlist = 0) => {
-    playlist
-      ? history.push("/" + route + "/" + playlist + "/" + id)
-      : history.push("/" + route + "/" + id);
+  const handleClick = (route, id, playlist = 0, size) => {
+    if (playlist !== 0) {
+      if (size !== 0) {
+        history.push("/" + route + "/" + playlist + "/" + id);
+      }
+    } else {
+      history.push("/" + route + "/" + id);
+    }
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -99,7 +103,12 @@ const AllPlaylists = ({ user }) => {
                   >
                     <CImg
                       onClick={() =>
-                        handleClick("viewPlaylist", item.video_id, item.id)
+                        handleClick(
+                          "viewPlaylist",
+                          item.video_id,
+                          item.id,
+                          item.all_videos
+                        )
                       }
                       style={{
                         width: "100%",
@@ -110,8 +119,7 @@ const AllPlaylists = ({ user }) => {
                         borderBottomRightRadius: "10px",
                       }}
                       src={
-                        API_URL + "images/getImage/" + item.video_id ===
-                        "undefined"
+                        item.all_videos === 0
                           ? "https://i.ytimg.com/img/no_thumbnail.jpg"
                           : API_URL + "images/getImage/" + item.video_id
                       }
@@ -152,7 +160,12 @@ const AllPlaylists = ({ user }) => {
                   <CCardBody style={{ fontSize: "80%" }}>
                     <h3
                       onClick={() =>
-                        handleClick("viewPlaylist", item.video_id, item.id)
+                        handleClick(
+                          "viewPlaylist",
+                          item.video_id,
+                          item.id,
+                          item.all_videos
+                        )
                       }
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
@@ -162,7 +175,9 @@ const AllPlaylists = ({ user }) => {
                       {`${diffDate(state.today, item.created_at)}`}
                       <br />
                       <span
-                        onClick={() => handleClick("playlist", item.id)}
+                        onClick={() =>
+                          handleClick("playlist", item.id, item.all_videos)
+                        }
                         style={{
                           marginBottom: "-1%",
                           marginTop: "5%",

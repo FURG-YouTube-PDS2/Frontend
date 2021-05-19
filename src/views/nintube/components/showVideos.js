@@ -44,7 +44,7 @@ const ShowVideos = ({ user }) => {
   useEffect(() => {
     if (!state.fetched) {
       var data = {
-        token: user.token,
+        token: user ? user.token : "",
       };
       Registrations(data)
         .then(function (data) {
@@ -201,7 +201,9 @@ const ShowVideos = ({ user }) => {
                           onClick={() => handleClick("view", item.id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
-                          {item.title.substring(0, 100) + "..."}
+                          {item.title.length <= 103
+                            ? item.title
+                            : item.title.substring(0, 100) + "..."}
                         </h3>{" "}
                         <CCardText
                           style={{ marginBottom: "-1%", marginTop: "1.5%" }}

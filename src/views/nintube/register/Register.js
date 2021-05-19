@@ -92,7 +92,7 @@ const Register = ({ history }) => {
         message: "",
       });
     } else {
-      data.append("old_img", API_URL + "media/nintube/defaul.png");
+      data.append("old_img", "");
       data.append("username", state.username);
       data.append("email", state.email);
       data.append("password", md5(state.password));

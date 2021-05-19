@@ -54,7 +54,7 @@ const Channel = ({ user }) => {
         };
       } else {
         var data = {
-          user_id: id !== "0" ? id : "",
+          user_id: id,
           token: "",
         };
       }
@@ -86,10 +86,18 @@ const Channel = ({ user }) => {
   const Change = (cond) => {
     if (user) {
       var data = { token: user.token, target_id: id };
+      console.log(cond);
       Inscribe(data)
         .then(function (data) {
           var channel = { ...state.channel };
+
+          if (cond) {
+            channel.subs += 1;
+          } else {
+            channel.subs -= 1;
+          }
           channel.is_sub = cond;
+          // channel.subs = channel.subs + 1;
           setState({ ...state, channel });
         })
         .catch((err) => {

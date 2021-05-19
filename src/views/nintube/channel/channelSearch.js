@@ -32,7 +32,7 @@ import CIcon from "@coreui/icons-react";
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
 //API
-import { SearchAll, Inscribe, API_URL } from "../../../util/Api";
+import { SearchInChannel, Inscribe, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 import NoVideo from "../components/noVideo";
 
@@ -60,7 +60,8 @@ const ChannelSearch = ({ user, search, channel_id }) => {
     };
     // data = searchSimulator()
     // setState({ ...state, fetched: true, videos:data.videos});
-    SearchAll(data).then(function (data) {
+    SearchInChannel(data).then(function (data) {
+      console.log(data);
       setState({ ...state, fetched: true, videos: data.videos });
     });
   };
@@ -68,6 +69,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
   useEffect(() => {
     doSearch();
   }, []);
+  console.log(state.videos);
   return (
     <div>
       <center>
@@ -127,7 +129,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
                         onClick={() => handleClick("view", item.id)}
                       >
                         {item.title.length <= 103
-                          ? item.name
+                          ? item.title
                           : item.title.substring(0, 100) + "..."}
                       </h5>
                       <span
@@ -145,7 +147,9 @@ const ChannelSearch = ({ user, search, channel_id }) => {
                       onClick={() => handleClick("view", item.id)}
                     >
                       <div className="float-left">
-                        {item.description.substring(0, 60) + "..."}
+                        {item.description.length <= 63
+                          ? item.description
+                          : item.description.substring(0, 60) + "..."}
                       </div>
                     </CCardText>{" "}
                   </CCardText>
@@ -155,7 +159,7 @@ const ChannelSearch = ({ user, search, channel_id }) => {
           </CCol>
         </CRow>
       </CContainer>
-      {state.fetched && state.channels.length == 0 && <NoVideo />}
+      {state.fetched && state.videos.legth === 0 && <NoVideo />}
     </div>
   );
 };

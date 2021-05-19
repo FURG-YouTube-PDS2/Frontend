@@ -25,7 +25,9 @@ function noVideo() {
       <CContainer>
         <CRow className="justify-content-center">
           <CCol xs="12" md="5">
-            <h1 style={{ color: "white" }}>Não há videos nesta págida!</h1>
+            <h1 style={{ color: "white" }}>
+              :( Infelizmente não há conteúdo aqui
+            </h1>
             {/* <div align="center">
                   <CButton
                     style={{ border: "1px solid red" }}

@@ -50,54 +50,9 @@ const Historic = ({ user, history }) => {
   }, []);
   return (
     <div>
-      {user != null ? (
+      {user != null && user !== "" ? (
         <>
           <h4 align="center">Histórico de Exibição</h4>
-          {/* <div style={{ float: "right", width: "20%" }}>
-            <CInputGroup>
-              <CInputGroupAppend>
-                <CInputGroupText>
-                  <CIcon name="cil-magnifying-glass" />
-                </CInputGroupText>
-              </CInputGroupAppend>
-              <CInput placeholder="Pesquisar no histório de exibição" />
-            </CInputGroup>
-
-            <>
-              <h4>Tipo de Histórico</h4>
-              {modes.map((mode, index) => {
-                return (
-                  <div
-                    className="d-flex justify-content-between my-4"
-                    key={index}
-                  >
-                    <span style={{ color: "white" }}>{mode.title}</span>
-                    {colors.map((color, key) => {
-                      return (
-                        <CSwitch //ALTERAR TIPO DE BOTÃO PARA DE ÚNICA ESCOLHA (Ñ ENCONTRADO NA DOCUMENTAÇÃO DO COREUI)
-                          key={key}
-                          color={color}
-                          checked
-                          value={color}
-                          {...mode}
-                        />
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </>
-
-            <CButton className="m-2" color="danger">
-              LIMPAR TODO O HISTÓRICO DE EXIBIÇÃO
-            </CButton>
-            <CButton className="m-2" color="danger">
-              PAUSAR O HISTÓRICO DE VISUALIZAÇÕES
-            </CButton>
-            <CButton className="m-2" color="danger">
-              GERENCIAR TODAS AS ATIVIDADES
-            </CButton>
-          </div> */}
           <HistVideo />
         </>
       ) : (

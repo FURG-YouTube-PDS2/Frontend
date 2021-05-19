@@ -41,10 +41,20 @@ const UploadEdit = ({ user, history }) => {
     display: true,
     recommend: [],
     selecteds: [],
+    video_url: "",
   });
   const onDrop = (files) => {
-    setState({ ...state, video: files[0], video_name: files[0].path });
-
+    // console.log(files);
+    if (Math.round(files[0].size / 1024 >= 6144)) {
+      alert("Opss", "O seu video tem mais de 6 Mb. Insira um video menor!");
+    } else {
+      setState({
+        ...state,
+        video: files[0],
+        video_name: files[0].path,
+        video_url: URL.createObjectURL(files[0]),
+      });
+    }
     // const options = {
     //   onUploadProgess: (progressEvent) => {
     //     const { loaded, total } = progressEvent;
@@ -196,7 +206,7 @@ const UploadEdit = ({ user, history }) => {
               description: data.videoData.data.description,
               title: data.videoData.data.title,
               privacy: data.videoData.data.privacy,
-              image: API_URL+"images/getImage/"+id,
+              image: API_URL + "images/getImage/" + id,
               recommend,
               selecteds,
             });
@@ -368,7 +378,7 @@ const UploadEdit = ({ user, history }) => {
                 <div align="center">
                   <h3 style={{ color: "white" }}>Vídeo Escolhido</h3>
                   <div style={{ width: "100%" }}>
-                    <Player />
+                    <Player url={state.video_url} />
                   </div>
                 </div>
               </CCol>

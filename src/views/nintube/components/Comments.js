@@ -147,7 +147,7 @@ const Comments = ({ user }) => {
         });
       }
     } else {
-      alert("Login", "Você não está logado!");
+      alert("Ops...", "Você não está logado!");
     }
   };
 
@@ -174,12 +174,13 @@ const Comments = ({ user }) => {
               nickname: data.username,
               comment: data.text,
               date: diffDate(new Date(), data.created_at),
-              src: API_URL + "images/getAvatar/" + user.token,
+              src: API_URL + "images/getYourAvatar/" + user.token,
               reply_id: data.reply_id,
               likes: 0,
               liked: 0,
               color: "white",
               edited: false,
+              is_owner: true,
             },
           ];
           comment = comm.concat(comment);
@@ -228,6 +229,7 @@ const Comments = ({ user }) => {
                 liked: 0,
                 color: "white",
                 edited: false,
+                is_owner: true,
               });
               comment[i].info.push(aux);
             }
@@ -268,6 +270,7 @@ const Comments = ({ user }) => {
                 liked: 0,
                 color: "white",
                 edited: false,
+                is_owner: true,
               });
               comment[i].info.push(aux);
             }
@@ -348,82 +351,84 @@ const Comments = ({ user }) => {
         });
       }
     } else {
-      alert("Login", "Você não está logado!");
+      alert("Ops...", "Você não está logado!");
     }
   };
 
-  const Liked = (liked, nvl, id, id2) => {
+  const Liked = (liked, nvl, id, id2, is_owner) => {
     if (user) {
-      if (nvl === 0) {
-        let comment = state.fiComment;
-        for (let i = 0; i < comment.length; i++) {
-          if (id === comment[i].id) {
-            switch (liked) {
-              case "like":
-                if (comment[i].liked === 1) {
-                  comment[i].likes -= 1;
-                  comment[i].liked = 0;
-                  comment[i].color = "white";
-                  setState({
-                    ...state,
-                    fiComment: comment,
-                  });
-                } else {
-                  comment[i].likes += 1;
-                  comment[i].liked = 1;
-                  comment[i].color = "green";
-                  setState({
-                    ...state,
-                    fiComment: comment,
-                  });
-                }
-                break;
+      if (!is_owner) {
+        if (nvl === 0) {
+          let comment = state.fiComment;
+          for (let i = 0; i < comment.length; i++) {
+            if (id === comment[i].id) {
+              switch (liked) {
+                case "like":
+                  if (comment[i].liked === 1) {
+                    comment[i].likes -= 1;
+                    comment[i].liked = 0;
+                    comment[i].color = "white";
+                    setState({
+                      ...state,
+                      fiComment: comment,
+                    });
+                  } else {
+                    comment[i].likes += 1;
+                    comment[i].liked = 1;
+                    comment[i].color = "green";
+                    setState({
+                      ...state,
+                      fiComment: comment,
+                    });
+                  }
+                  break;
+              }
+              var data = {
+                token: user.token,
+                comment_id: id,
+                liked: comment[i].liked,
+              };
             }
-            var data = {
-              token: user.token,
-              comment_id: id,
-              liked: comment[i].liked,
-            };
           }
-        }
-      } else {
-        let comment = state.dispAns;
-        for (let i = 0; i < comment.length; i++) {
-          if (id2 === comment[i].id) {
-            for (let w = 0; w < comment[i].info.length; w++) {
-              if (id === comment[i].info[w][0].id) {
-                switch (liked) {
-                  case "like":
-                    if (comment[i].info[w][0].liked === 1) {
-                      comment[i].info[w][0].likes -= 1;
-                      comment[i].info[w][0].liked = 0;
-                      comment[i].info[w][0].color = "white";
-                      setState({
-                        ...state,
-                        dispAns: comment,
-                      });
-                    } else {
-                      comment[i].info[w][0].likes += 1;
-                      comment[i].info[w][0].liked = 1;
-                      comment[i].info[w][0].color = "green";
-                      setState({
-                        ...state,
-                        dispAns: comment,
-                      });
-                    }
-                    break;
+        } else {
+          let comment = state.dispAns;
+          for (let i = 0; i < comment.length; i++) {
+            if (id2 === comment[i].id) {
+              for (let w = 0; w < comment[i].info.length; w++) {
+                if (id === comment[i].info[w][0].id) {
+                  switch (liked) {
+                    case "like":
+                      if (comment[i].info[w][0].liked === 1) {
+                        comment[i].info[w][0].likes -= 1;
+                        comment[i].info[w][0].liked = 0;
+                        comment[i].info[w][0].color = "white";
+                        setState({
+                          ...state,
+                          dispAns: comment,
+                        });
+                      } else {
+                        comment[i].info[w][0].likes += 1;
+                        comment[i].info[w][0].liked = 1;
+                        comment[i].info[w][0].color = "green";
+                        setState({
+                          ...state,
+                          dispAns: comment,
+                        });
+                      }
+                      break;
+                  }
+                  var data = {
+                    token: user.token,
+                    comment_id: id,
+                    liked: comment[i].info[w][0].liked,
+                  };
                 }
-                var data = {
-                  token: user.token,
-                  comment_id: id,
-                  liked: comment[i].info[w][0].liked,
-                };
               }
             }
           }
         }
+        commentLiked(data).then(function (data) {});
       }
-      commentLiked(data).then(function (data) {});
     }
   };
 
@@ -496,6 +501,7 @@ const Comments = ({ user }) => {
           var today = new Date();
           var mtxAux = Array();
           var showAux = Array();
+
           for (let i = 0; i < data.length; i++) {
             if (data[i].reply_id === "") {
               listAux.push({
@@ -643,7 +649,7 @@ const Comments = ({ user }) => {
                     <a
                       class="myBut "
                       onClick={() => sendCom(state.newComment, 0, "", "")}
-                      style={{ marginLeft: "1%" }}
+                      style={{ marginLeft: "1%", color: "black" }}
                     >
                       Enviar
                     </a>
@@ -739,7 +745,7 @@ const Comments = ({ user }) => {
                             onClick={() =>
                               sendEdit(display.oldComment, display.idEdit, 0)
                             }
-                            style={{ marginLeft: "1%" }}
+                            style={{ marginLeft: "1%", color: "black" }}
                           >
                             Enviar
                           </a>
@@ -816,7 +822,9 @@ const Comments = ({ user }) => {
                     <div>
                       <CButton
                         style={{ color: item.color, marginLeft: "-1.1%" }}
-                        onClick={() => Liked("like", 0, item.id, 0)}
+                        onClick={() =>
+                          Liked("like", 0, item.id, 0, item.is_owner)
+                        }
                       >
                         <CIcon name="cilThumbUp" /> {item.likes}
                       </CButton>
@@ -989,7 +997,10 @@ const Comments = ({ user }) => {
                                                 1
                                               )
                                             }
-                                            style={{ marginLeft: "1%" }}
+                                            style={{
+                                              marginLeft: "1%",
+                                              color: "black",
+                                            }}
                                           >
                                             Enviar
                                           </a>
@@ -1093,17 +1104,13 @@ const Comments = ({ user }) => {
                                             "like",
                                             1,
                                             itm[0].id,
-                                            state.dispAns[index].id
+                                            state.dispAns[index].id,
+                                            itm[0].is_owner
                                           )
                                         }
                                       >
                                         <CIcon name="cilThumbUp" />{" "}
                                         {itm[0].likes}
-                                      </CButton>
-                                      <CButton
-                                        style={{ color: state.color_dislike }}
-                                      >
-                                        <CIcon name="cilThumbDown" />
                                       </CButton>
                                       <CButton
                                         style={{ color: "white" }}
@@ -1248,6 +1255,8 @@ const Comments = ({ user }) => {
           </div>
         </CCol>
       </CRow>
+      <br></br>
+      <br></br>
     </div>
   );
 };

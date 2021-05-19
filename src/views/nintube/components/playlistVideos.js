@@ -38,136 +38,13 @@ import "./componentStyle.css";
 
 const playlist = { name: "Minha Playlist", privacy: true, is_owner: true };
 
-const videos = [
-  {
-    id: 1,
-    title:
-      // "a",
-      "FEED DO USUÁRIO | Criando uma Rede Social com React.js e .NET Core #29",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://cdn.discordapp.com/attachments/300483456440336385/789180212175699998/unknown.png",
-  },
-  {
-    id: 2,
-    title: "MAMACITA",
-    //   "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 3,
-    title: "Titulo",
-    // "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 4,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  // {
-  //   id: 5,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 6,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 7,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 8,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 9,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 10,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 11,
-  //   name:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 12,
-  //   title:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 13,
-  //   title:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 14,
-  //   title:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-  // {
-  //   id: 15,
-  //   title:
-  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-  //   channel: "Lucas Nhimi",
-  //   thumb:
-  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  // },
-];
-
 const PlaylistVideos = ({ user }) => {
   let { id } = useParams();
 
   const [state, setState] = useState({
     fetched: false,
     playlist: "",
+    status: false,
     videos: [],
     today: new Date(),
     change: false,
@@ -380,6 +257,7 @@ const PlaylistVideos = ({ user }) => {
               ...state,
               fetched: true,
               playlist: data.data,
+              status: data.data.status,
               playlist_edit: data.data.name,
               videos: data.videos,
             });
@@ -411,7 +289,7 @@ const PlaylistVideos = ({ user }) => {
       className="c-app c-default-layout"
       style={{ display: "flex", height: "100%" }}
     >
-      {state.videos.length === 0 && (
+      {!state.status && (
         <div className="div-reload">
           <CIcon className="icone" name="cilReload" size="3xl" />
         </div>
@@ -430,28 +308,46 @@ const PlaylistVideos = ({ user }) => {
             height: "100%",
           }}
         >
-          {state.videos.length !== 0 && (
+          {state.status && (
             <CCardBody
               style={{ border: "2px solid #B3272C", borderRadius: "20px" }}
             >
-              <div>
-                <CImg
-                  style={{
-                    width: "100%",
-                    height: "350px",
-                    marginRight: "1%",
-                    borderBottom: "1px solid black",
-                    borderRadius: "10px",
-                    cursor: "pointer",
-                  }}
-                  src={API_URL + "images/getImage/" + state.videos[0].video_id}
-                  onClick={() =>
-                    history.push(
-                      "/viewPlaylist/" + id + "/" + state.videos[0].video_id
-                    )
-                  }
-                />
-              </div>
+              {state.videos.length === 0 ? (
+                <div>
+                  <CImg
+                    style={{
+                      width: "100%",
+                      height: "350px",
+                      marginRight: "1%",
+                      borderBottom: "1px solid black",
+                      borderRadius: "10px",
+                      cursor: "pointer",
+                    }}
+                    src={"https://i.ytimg.com/img/no_thumbnail.jpg"}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <CImg
+                    style={{
+                      width: "100%",
+                      height: "350px",
+                      marginRight: "1%",
+                      borderBottom: "1px solid black",
+                      borderRadius: "10px",
+                      cursor: "pointer",
+                    }}
+                    src={
+                      API_URL + "images/getImage/" + state.videos[0].video_id
+                    }
+                    onClick={() =>
+                      history.push(
+                        "/viewPlaylist/" + id + "/" + state.videos[0].video_id
+                      )
+                    }
+                  />
+                </div>
+              )}
 
               <div
                 style={{

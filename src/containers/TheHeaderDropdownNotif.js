@@ -102,15 +102,21 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
+                      &nbsp;
                       <CImg src={item.avatar} className="c-avatar-img" />
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "90%", height: "100%" }}>
-                    <p style={{ wordBreak: "break-word", width: "90%" }}>
+                  <div style={{ width: "400px", height: "100%" }}>
+                    <p
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                      }}
+                    >
                       {item.name}
-                      {' marcou seu comentário com "Gostei": '}"{item.text}"
+                      {'"Curtiu" seu comentário: '}"{item.text}"
                     </p>
 
                     <div className="small text-muted text-truncate">
@@ -119,9 +125,10 @@ const TheHeaderDropdownNotif = ({ user }) => {
                   </div>
                   <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
+                      &nbsp;
                       <CImg
                         src={API_URL + "images/getImage/" + item.video_id}
-                        style={{ width: "100%", height: "70px" }}
+                        style={{ width: "100px", height: "80px" }}
                       />
                     </div>
                   </div>
@@ -146,25 +153,34 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
+                      &nbsp;
                       <CImg src={item.avatar} className="c-avatar-img" />
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "90%" }}>
-                    <p>
+                  <div style={{ width: "400px", height: "100%" }}>
+                    <p
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                      }}
+                    >
                       {item.name}
-                      {" comentou no seu comentário: "}"{item.text}"
+                      {" comentou no seu comentário: "}
+                      {item.text}
                     </p>
+
                     <div className="small text-muted text-truncate">
                       {diffDate(new Date(), item.date)}
                     </div>
                   </div>
-                  <div className=" ml-1 float-right" style={{ width: "27%" }}>
+                  <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
+                      &nbsp;
                       <CImg
-                        src={API_URL + "/images/getImage/" + item.video_id}
-                        style={{ width: "100%", height: "70px" }}
+                        src={API_URL + "images/getImage/" + item.video_id}
+                        style={{ width: "100px", height: "80px" }}
                       />
                     </div>
                   </div>
@@ -189,29 +205,38 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
+                      &nbsp;
                       <CImg
-                        src={API_URL + "/images/getImage/" + item.video_id}
+                        style={{ float: "right" }}
+                        src={API_URL + "images/getAvatar/" + item.user_id}
                         className="c-avatar-img"
                       />
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "90%" }}>
-                    <p>
+                  <div style={{ width: "400px", height: "100%" }}>
+                    <p
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                      }}
+                    >
                       {item.name}
-                      {" enviou o video "}
+                      {" Enviou seu novo vídeo: "}
                       {item.text}
                     </p>
+
                     <div className="small text-muted text-truncate">
                       {diffDate(new Date(), item.date)}
                     </div>
                   </div>
-                  <div className=" ml-1 float-right" style={{ width: "27%" }}>
+                  <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
+                      &nbsp;
                       <CImg
-                        src={API_URL + "/images/getImage/" + item.video_id}
-                        style={{ width: "100%", height: "70px" }}
+                        src={API_URL + "images/getImage/" + item.video_id}
+                        style={{ width: "100px", height: "80px" }}
                       />
                     </div>
                   </div>

@@ -19,7 +19,9 @@ const Inscriptions = ({ user }) => {
       setState({ ...state, fetched: true });
     }
   }, []);
-  return <div>{user != null ? <ShowVideos /> : <LogoutPage />}</div>;
+  return (
+    <div>{user !== null && user !== "" ? <ShowVideos /> : <LogoutPage />}</div>
+  );
 };
 
 const mapStateToProps = (state) => ({ user: state.user });
