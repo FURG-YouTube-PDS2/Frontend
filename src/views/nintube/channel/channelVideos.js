@@ -22,6 +22,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
+import NoVideo from "../components/noVideo";
 //API
 import { channelGetVideos, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
@@ -82,45 +83,53 @@ const ChannelVideos = ({ user }) => {
       )}
       <CContainer fluid>
         <CRow>
-          {state.videos.map((item, index) => (
-            <CCol style={{ width: "5%" }} sm="2">
-              <CCard style={{ border: "2px solid #B3272C" }}>
-                <CImg
-                  onClick={() => handleClick("view", item.video_id)}
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    cursor: "pointer",
-                    borderBottom: "1px solid black",
-                    borderBottomLeftRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                  }}
-                  src={API_URL + "images/getImage/" + item.video_id}
-                />
-                <div>
-                  <CCardBody style={{ fontSize: "80%" }}>
-                    <h3
+          {state.videos.length === 0 ? (
+            <div style={{ width: "100%", height: "100%" }}>
+              <NoVideo />
+            </div>
+          ) : (
+            <>
+              {state.videos.map((item, index) => (
+                <CCol style={{ width: "5%" }} sm="2">
+                  <CCard style={{ border: "2px solid #B3272C" }}>
+                    <CImg
                       onClick={() => handleClick("view", item.video_id)}
-                      style={{ fontSize: "120%", cursor: "pointer" }}
-                    >
-                      {item.title}
-                    </h3>{" "}
-                    <CCardText
-                      style={{ marginBottom: "-1%", marginTop: "1.5%" }}
-                    >
-                      <CCardText
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.video_id)}
-                      >{`${item.views} Visualizações • ${diffDate(
-                        state.today,
-                        item.created_at
-                      )}`}</CCardText>{" "}
-                    </CCardText>
-                  </CCardBody>
-                </div>
-              </CCard>
-            </CCol>
-          ))}
+                      style={{
+                        width: "100%",
+                        height: "150px",
+                        cursor: "pointer",
+                        borderBottom: "1px solid black",
+                        borderBottomLeftRadius: "10px",
+                        borderBottomRightRadius: "10px",
+                      }}
+                      src={API_URL + "images/getImage/" + item.video_id}
+                    />
+                    <div>
+                      <CCardBody style={{ fontSize: "80%" }}>
+                        <h3
+                          onClick={() => handleClick("view", item.video_id)}
+                          style={{ fontSize: "120%", cursor: "pointer" }}
+                        >
+                          {item.title}
+                        </h3>{" "}
+                        <CCardText
+                          style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                        >
+                          <CCardText
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleClick("view", item.video_id)}
+                          >{`${item.views} Visualizações • ${diffDate(
+                            state.today,
+                            item.created_at
+                          )}`}</CCardText>{" "}
+                        </CCardText>
+                      </CCardBody>
+                    </div>
+                  </CCard>
+                </CCol>
+              ))}
+            </>
+          )}
         </CRow>
       </CContainer>
     </div>

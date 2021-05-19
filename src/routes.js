@@ -46,7 +46,7 @@ const routes = [
   { path: "/edit/profile", name: "EditProfile", component: EditProfile },
   { path: "/playlist/:id", name: "Playlist", component: Playlist },
   { path: "/channel/:id", name: "Channel", component: Channel },
-  { path: "/historic", name: "Historic", component: Historic },
+  { path: "/history", name: "History", component: Historic },
   { path: "/upload/", name: "Upload", component: Upload },
   { path: "/edit/upload/:id", name: "UploadEdit", component: UploadEdit },
   { path: "/studio", name: "Studio", component: Studio },

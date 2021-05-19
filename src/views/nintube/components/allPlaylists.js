@@ -26,6 +26,7 @@ import { getPlaylists, API_URL } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "../components/componentStyle.css";
+import NoVideo from "../components/noVideo";
 
 const AllPlaylists = ({ user }) => {
   let { id } = useParams();
@@ -35,10 +36,14 @@ const AllPlaylists = ({ user }) => {
     today: new Date(),
   });
   let history = useHistory();
-  const handleClick = (route, id, playlist = 0) => {
-    playlist
-      ? history.push("/" + route + "/" + playlist + "/" + id)
-      : history.push("/" + route + "/" + id);
+  const handleClick = (route, id, playlist = 0, size) => {
+    if (playlist !== 0) {
+      if (size !== 0) {
+        history.push("/" + route + "/" + playlist + "/" + id);
+      }
+    } else {
+      history.push("/" + route + "/" + id);
+    }
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -83,98 +88,115 @@ const AllPlaylists = ({ user }) => {
       )}
       <CContainer fluid>
         <CRow>
-          {state.videos.map((item, index) => (
-            <CCol style={{ width: "5%" }} sm="2">
-              <CCard style={{ border: "2px solid #B3272C" }}>
-                <div
-                  // className="style-scope ytd-grid-playlist-renderer"
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <div
-                  // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
-                  >
-                    <CImg
-                      onClick={() =>
-                        handleClick("viewPlaylist", item.video_id, item.id)
-                      }
-                      style={{
-                        width: "100%",
-                        height: "150px",
-                        cursor: "pointer",
-                        borderBottom: "1px solid black",
-                        borderBottomLeftRadius: "10px",
-                        borderBottomRightRadius: "10px",
-                      }}
-                      src={
-                        API_URL + "images/getImage/" + item.video_id ===
-                        "undefined"
-                          ? "https://i.ytimg.com/img/no_thumbnail.jpg"
-                          : API_URL + "images/getImage/" + item.video_id
-                      }
-                    />
-                  </div>
-                  <div
-                    // className="style-scope ytd-playlist-thumbnail"
-                    style={{
-                      width: "50%",
-                      height: "100%",
-                      fontSize: "20px",
-                      color: "white",
-                      position: "absolute",
-                      right: 0,
-                      top: 0,
-                      backgroundColor: "rgb(8 8 8 / 80%)",
-
-                      display: "flex",
-                    }}
-                  >
+          {state.videos.length === 0 ? (
+            <div style={{ width: "100%", height: "100%" }}>
+              <NoVideo />
+            </div>
+          ) : (
+            <>
+              {state.videos.map((item, index) => (
+                <CCol style={{ width: "5%" }} sm="2">
+                  <CCard style={{ border: "2px solid #B3272C" }}>
                     <div
-                      className="text-center"
+                      // className="style-scope ytd-grid-playlist-renderer"
                       style={{
-                        // marginBottom: "auto",
-                        // marginTop: "auto",
-                        margin: "auto",
-                        // flexDirection: "row",
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
                       }}
                     >
-                      <span>{item.all_videos}</span>
-                      <div>
-                        <CIcon size="2xl" name="cilMenu"></CIcon>
+                      <div
+                      // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
+                      >
+                        <CImg
+                          onClick={() =>
+                            handleClick(
+                              "viewPlaylist",
+                              item.video_id,
+                              item.id,
+                              item.all_videos
+                            )
+                          }
+                          style={{
+                            width: "100%",
+                            height: "150px",
+                            cursor: "pointer",
+                            borderBottom: "1px solid black",
+                            borderBottomLeftRadius: "10px",
+                            borderBottomRightRadius: "10px",
+                          }}
+                          src={
+                            item.all_videos === 0
+                              ? "https://i.ytimg.com/img/no_thumbnail.jpg"
+                              : API_URL + "images/getImage/" + item.video_id
+                          }
+                        />
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <CCardBody style={{ fontSize: "80%" }}>
-                    <h3
-                      onClick={() =>
-                        handleClick("viewPlaylist", item.video_id, item.id)
-                      }
-                      style={{ fontSize: "120%", cursor: "pointer" }}
-                    >
-                      {item.name}
-                    </h3>{" "}
-                    <div>
-                      {`${diffDate(state.today, item.created_at)}`}
-                      <br />
-                      <span
-                        onClick={() => handleClick("playlist", item.id)}
+                      <div
+                        // className="style-scope ytd-playlist-thumbnail"
                         style={{
-                          marginBottom: "-1%",
-                          marginTop: "5%",
-                          cursor: "pointer",
-                          color: "black",
-                          fontWeight: "bold",
+                          width: "50%",
+                          height: "100%",
+                          fontSize: "20px",
+                          color: "white",
+                          position: "absolute",
+                          right: 0,
+                          top: 0,
+                          backgroundColor: "rgb(8 8 8 / 80%)",
+
+                          display: "flex",
                         }}
                       >
-                        Ver Playlist Completa
-                      </span>
+                        <div
+                          className="text-center"
+                          style={{
+                            // marginBottom: "auto",
+                            // marginTop: "auto",
+                            margin: "auto",
+                            // flexDirection: "row",
+                          }}
+                        >
+                          <span>{item.all_videos}</span>
+                          <div>
+                            <CIcon size="2xl" name="cilMenu"></CIcon>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    {/* <CCardText
+                    <div>
+                      <CCardBody style={{ fontSize: "80%" }}>
+                        <h3
+                          onClick={() =>
+                            handleClick(
+                              "viewPlaylist",
+                              item.video_id,
+                              item.id,
+                              item.all_videos
+                            )
+                          }
+                          style={{ fontSize: "120%", cursor: "pointer" }}
+                        >
+                          {item.name}
+                        </h3>{" "}
+                        <div>
+                          {`${diffDate(state.today, item.created_at)}`}
+                          <br />
+                          <span
+                            onClick={() =>
+                              handleClick("playlist", item.id, item.all_videos)
+                            }
+                            style={{
+                              marginBottom: "-1%",
+                              marginTop: "5%",
+                              cursor: "pointer",
+                              color: "black",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Ver Playlist Completa
+                          </span>
+                        </div>
+                        {/* <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
                     >
                       <span
@@ -188,11 +210,13 @@ const AllPlaylists = ({ user }) => {
                         onClick={() => handleClick("view", item.id)}
                       >{`${item.views} • ${item.date}`}</CCardText>{" "}
                     </CCardText> */}
-                  </CCardBody>
-                </div>
-              </CCard>
-            </CCol>
-          ))}
+                      </CCardBody>
+                    </div>
+                  </CCard>
+                </CCol>
+              ))}
+            </>
+          )}
         </CRow>
       </CContainer>
     </div>

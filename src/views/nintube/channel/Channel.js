@@ -29,7 +29,7 @@ import CIcon from "@coreui/icons-react";
 import ShowVideos from "../components/showVideos";
 import AllPlaylists from "../components/allPlaylists";
 import ChannelVideos from "./channelVideos";
-import ChannelSearch from "./channelSearch";
+import ChannelSearch from "./ChannelSearch";
 //Style
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
@@ -54,7 +54,7 @@ const Channel = ({ user }) => {
         };
       } else {
         var data = {
-          user_id: id !== "0" ? id : "",
+          user_id: id,
           token: "",
         };
       }
@@ -89,7 +89,14 @@ const Channel = ({ user }) => {
       Inscribe(data)
         .then(function (data) {
           var channel = { ...state.channel };
+
+          if (cond) {
+            channel.subs += 1;
+          } else {
+            channel.subs -= 1;
+          }
           channel.is_sub = cond;
+          // channel.subs = channel.subs + 1;
           setState({ ...state, channel });
         })
         .catch((err) => {

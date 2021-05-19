@@ -41,10 +41,14 @@ const LibraryPlaylists = ({ user }) => {
     today: new Date(),
   });
   let history = useHistory();
-  const handleClick = (route, id, playlist = 0) => {
-    playlist
-      ? history.push("/" + route + "/" + playlist + "/" + id)
-      : history.push("/" + route + "/" + id);
+  const handleClick = (route, id, playlist = 0, size) => {
+    if (playlist !== 0) {
+      if (size !== 0) {
+        history.push("/" + route + "/" + playlist + "/" + id);
+      }
+    } else {
+      history.push("/" + route + "/" + id);
+    }
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -103,6 +107,15 @@ const LibraryPlaylists = ({ user }) => {
               </div>
             </div>
             <CRow>
+              <>
+                {state.watch_late.length === 0 && (
+                  <CRow className="justify-content-center">
+                    <CCol>
+                      <h1 style={{ color: "white" }}>:( Sem vídeos</h1>
+                    </CCol>
+                  </CRow>
+                )}
+              </>
               {state.watch_late.map((item, index) => (
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
@@ -124,7 +137,9 @@ const LibraryPlaylists = ({ user }) => {
                           onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
-                          {item.title.substring(0, 100) + "..."}
+                          {item.title.length <= 103
+                            ? item.title
+                            : item.title.substring(0, 100) + "..."}
                         </h3>{" "}
                         <CCardText
                           style={{ marginBottom: "-1%", marginTop: "1.5%" }}
@@ -165,6 +180,15 @@ const LibraryPlaylists = ({ user }) => {
               </div>
             </div>
             <CRow>
+              <>
+                {state.liked.length === 0 && (
+                  <CRow className="justify-content-center">
+                    <CCol>
+                      <h1 style={{ color: "white" }}>:( Sem vídeos</h1>
+                    </CCol>
+                  </CRow>
+                )}
+              </>
               {state.liked.map((item, index) => (
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
@@ -186,7 +210,9 @@ const LibraryPlaylists = ({ user }) => {
                           onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
-                          {item.title.substring(0, 100) + "..."}
+                          {item.title.length <= 103
+                            ? item.title
+                            : item.title.substring(0, 100) + "..."}
                         </h3>{" "}
                         <CCardText
                           style={{ marginBottom: "-1%", marginTop: "1.5%" }}
@@ -216,6 +242,15 @@ const LibraryPlaylists = ({ user }) => {
             <h3 style={{ color: "white" }}>Playlists</h3>
 
             <CRow>
+              <>
+                {state.playlist.length === 0 && (
+                  <CRow className="justify-content-center">
+                    <CCol>
+                      <h1 style={{ color: "white" }}>:( Sem vídeos</h1>
+                    </CCol>
+                  </CRow>
+                )}
+              </>
               {state.playlist.map((item, index) => (
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
@@ -230,25 +265,43 @@ const LibraryPlaylists = ({ user }) => {
                       <div
                       // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
                       >
-                        <CImg
-                          onClick={() =>
-                            handleClick("viewPlaylist", item.video_id, item.id)
-                          }
-                          style={{
-                            width: "100%",
-                            height: "150px",
-                            cursor: "pointer",
-                            borderBottom: "1px solid black",
-                            borderBottomLeftRadius: "10px",
-                            borderBottomRightRadius: "10px",
-                          }}
-                          src={
-                            API_URL + "images/getImage/" + item.video_id ===
-                            "undefined"
-                              ? "https://i.ytimg.com/img/no_thumbnail.jpg"
-                              : API_URL + "images/getImage/" + item.video_id
-                          }
-                        />
+                        {item.all_videos === 0 ? (
+                          <div>
+                            <CImg
+                              style={{
+                                width: "100%",
+                                height: "150px",
+                                cursor: "pointer",
+                                borderBottom: "1px solid black",
+                                borderBottomLeftRadius: "10px",
+                                borderBottomRightRadius: "10px",
+                              }}
+                              src={"https://i.ytimg.com/img/no_thumbnail.jpg"}
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <CImg
+                              onClick={() =>
+                                handleClick(
+                                  "viewPlaylist",
+                                  item.video_id,
+                                  item.id,
+                                  item.all_videos
+                                )
+                              }
+                              style={{
+                                width: "100%",
+                                height: "150px",
+                                cursor: "pointer",
+                                borderBottom: "1px solid black",
+                                borderBottomLeftRadius: "10px",
+                                borderBottomRightRadius: "10px",
+                              }}
+                              src={API_URL + "images/getImage/" + item.video_id}
+                            />
+                          </div>
+                        )}
                       </div>
                       <div
                         // className="style-scope ytd-playlist-thumbnail"
@@ -285,7 +338,12 @@ const LibraryPlaylists = ({ user }) => {
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
                           onClick={() =>
-                            handleClick("viewPlaylist", item.video_id, item.id)
+                            handleClick(
+                              "viewPlaylist",
+                              item.video_id,
+                              item.id,
+                              item.all_videos
+                            )
                           }
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >

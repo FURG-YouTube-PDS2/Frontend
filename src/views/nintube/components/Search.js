@@ -77,12 +77,11 @@ const Search = ({ user }) => {
     // data = searchSimulator()
     // setState({ ...state, videos:data.videos, channels: data.channels});
     SearchAll(data).then(function (data) {
-      console.log(data)
       setState({
         ...state,
         fetched: true,
         videos: data.videos,
-        playlists:data.playlists,
+        playlists: data.playlists,
         channels: data.channels,
         fetched: true,
       });
@@ -96,14 +95,28 @@ const Search = ({ user }) => {
         target_id: state.channels[index].id,
       };
 
-      let channels = state.channels;
-      channels[index].is_subscribed = !channels[index].is_subscribed;
-      if (channels[index].is_subscribed) {
-        channels[index].subscribers += 1;
-      } else {
-        channels[index].subscribers -= 1;
-      }
-      setState({ ...state, channels });
+      Inscribe(data)
+        .then(function (data) {
+          let channels = state.channels;
+
+          channels[index].is_subscribed =
+            channels[index].is_subscribed === "1" ? "0" : "1";
+
+          if (channels[index].is_subscribed === "1") {
+            channels[index].subscribers =
+              parseInt(channels[index].subscribers) + 1;
+          } else {
+            channels[index].subscribers -= 1;
+          }
+          setState({ ...state, channels });
+        })
+        .catch((err) => {
+          setState({
+            ...state,
+            error: "Algum problema aconteceu, tente novamente mais tarde!",
+            message: "",
+          });
+        });
     } else {
       alert("Login", "Você não está logado!");
     }
@@ -147,15 +160,20 @@ const Search = ({ user }) => {
             {state.channels.map((item, index) => (
               <CCard
                 style={{
+                  display: "flex",
                   marginBottom: "1%",
                   border: "2px solid #B3272C",
                   borderRadius: "30px",
+                  // height: "100%",
+                  width: "100%",
                 }}
               >
-                <CCardBody style={{ margin: "0" }}>
+                <CCardBody
+                // style={{ margin: "0" }}
+                >
                   <CCardBody
                     className=" float-left"
-                    style={{ height: "100px" }}
+                    style={{ height: "100px", marginRight: "auto" }}
                   >
                     <div className="c-avatar">
                       <CImg
@@ -172,11 +190,11 @@ const Search = ({ user }) => {
                     </div>
                   </CCardBody>
 
-                  <CCardText>
+                  <CCardText style={{ marginLeft: "6.5%" }}>
                     <CCardText>
                       <h5
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.id)}
+                        onClick={() => handleClick("channel", item.id)}
                       >
                         {item.name.length <= 103
                           ? item.name
@@ -184,31 +202,33 @@ const Search = ({ user }) => {
                       </h5>
                       <span
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.id)}
+                        onClick={() => handleClick("channel", item.id)}
                       >
                         {`  ${item.subscribers} Inscritos • ${item.video_count}  Vídeos • `}
                       </span>{" "}
                       <br />
-                      {item.is_subscribed === "0" && (
-                        <CButton
-                          id="inscribe-search"
-                          name={"inscribe-" + index}
-                          class="inscribe"
-                          onClick={(e) => Change(e.target.name.split("-")[1])}
-                        >
-                          Inscrever-se
-                        </CButton>
-                      )}{" "}
-                      {item.is_subscribed === "1" && (
-                        <CButton
-                          id="inscribe-search"
-                          name={"inscribe-" + index}
-                          class="registered"
-                          onClick={(e) => Change(e.target.name.split("-")[1])}
-                        >
-                          Inscrito
-                        </CButton>
-                      )}
+                      <div style={{ marginTop: "1%" }}>
+                        {item.is_subscribed === "0" && (
+                          <CButton
+                            id="inscribe-search"
+                            name={"inscribe-" + index}
+                            class="inscribe"
+                            onClick={(e) => Change(e.target.name.split("-")[1])}
+                          >
+                            Inscrever-se
+                          </CButton>
+                        )}{" "}
+                        {item.is_subscribed === "1" && (
+                          <CButton
+                            id="inscribe-search"
+                            name={"inscribe-" + index}
+                            class="registered"
+                            onClick={(e) => Change(e.target.name.split("-")[1])}
+                          >
+                            Inscrito
+                          </CButton>
+                        )}
+                      </div>
                     </CCardText>
                   </CCardText>
                 </CCardBody>
@@ -216,88 +236,112 @@ const Search = ({ user }) => {
             ))}
           </CCol>
         </CRow>
-        <CRow>
-          <CCol sm="12">
-          {state.playlists.map((item, index) => (
-                <CCol style={{width:"300px"}} >
-                  <CCard style={{ border: "2px solid #B3272C" }}>
-                    <div
-                      // className="style-scope ytd-grid-playlist-renderer"
+        <div>
+          <div
+            // sm="6"
+            style={{
+              display: "flex",
+              flexWrap: "nowrap",
+              overflowX: "scroll",
+              width: "100%",
+              height: "100%",
+              marginBottom: "2%",
+              overflow: "hidden",
+            }}
+          >
+            {state.playlists.map((item, index) => (
+              // <div style={{ width: "15%" }}>
+              <CCard style={{ border: "2px solid #B3272C", marginRight: "2%" }}>
+                <div
+                  // className="style-scope ytd-grid-playlist-renderer"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <div
+                  // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
+                  >
+                    <CImg
+                      onClick={() =>
+                        handleClick("viewPlaylist", item.video_id, item.pl_id)
+                      }
                       style={{
-                        position: "relative",
+                        height: "150px",
                         width: "266.3px",
-                        height: "100%",
+                        cursor: "pointer",
+                        float: "left",
+                        marginRight: "1%",
+                        borderBottom: "1px solid black",
+                      }}
+                      src={API_URL + "images/getImage/" + item.video_id}
+                    />
+                  </div>
+                  <div
+                    // className="style-scope ytd-playlist-thumbnail"
+                    style={{
+                      width: "50%",
+                      height: "100%",
+                      fontSize: "20px",
+                      color: "white",
+                      position: "absolute",
+                      right: 0,
+                      top: 0,
+                      backgroundColor: "rgb(8 8 8 / 80%)",
+
+                      display: "flex",
+                    }}
+                  >
+                    <div
+                      className="text-center"
+                      style={{
+                        // marginBottom: "auto",
+                        // marginTop: "auto",
+                        margin: "auto",
+                        // flexDirection: "row",
                       }}
                     >
-                      <div
-                      // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
-                      >
-                        <CImg
-                          onClick={() =>
-                            handleClick("viewPlaylist", item.video_id, item.pl_id)
-                          }
-                          style={{
-                            height: "150px",
-                            width: "266.3px",
-                            cursor: "pointer",
-                            float: "left",
-                            marginRight: "1%",
-                            borderBottom: "1px solid black"
-                          }}
-                          src={
-                            API_URL + "images/getImage/" + item.video_id
-                          }
-                        />
-                      </div>
-                      <div
-                        // className="style-scope ytd-playlist-thumbnail"
-                        style={{
-                          width: "50%",
-                          height: "100%",
-                          fontSize: "20px",
-                          color: "white",
-                          position: "absolute",
-                          right: 0,
-                          top: 0,
-                          backgroundColor: "rgb(8 8 8 / 80%)",
-
-                          display: "flex",
-                        }}
-                      >
-                        <div
-                          className="text-center"
-                          style={{
-                            // marginBottom: "auto",
-                            // marginTop: "auto",
-                            margin: "auto",
-                            // flexDirection: "row",
-                          }}
-                        >
-                          <span>{item.video_count}</span>
-                          <div>
-                            <CIcon size="2xl" name="cilMenu"></CIcon>
-                          </div>
-                        </div>
+                      <span>{item.video_count}</span>
+                      <div>
+                        <CIcon size="2xl" name="cilMenu"></CIcon>
                       </div>
                     </div>
-                    <div>
-                      <CCardBody style={{ fontSize: "80%" }}>
-                        <h3
-                          onClick={() =>
-                            handleClick("viewPlaylist", item.video_id, item.pl_id)
-                          }
-                          style={{ fontSize: "120%", cursor: "pointer" }}
-                        >
-                          {item.name}
-                        </h3>{" "}
-                        <span style={{wordWrap: "break-word"}}>{item.name}</span>
-                      </CCardBody>
-                    </div>
-                  </CCard>
-                  </CCol>
-              ))}
-          </CCol>
-        </CRow>
+                  </div>
+                </div>
+                <div>
+                  <CCardBody style={{ fontSize: "80%" }}>
+                    <h3
+                      onClick={() =>
+                        handleClick("viewPlaylist", item.video_id, item.pl_id)
+                      }
+                      style={{ fontSize: "120%", cursor: "pointer" }}
+                    >
+                      {item.name}
+                    </h3>{" "}
+                    <span style={{ wordWrap: "break-word" }}>{item.name}</span>
+                    <br />
+                    <span
+                      onClick={() =>
+                        handleClick("playlist", item.id, item.all_videos)
+                      }
+                      style={{
+                        marginBottom: "-1%",
+                        marginTop: "5%",
+                        cursor: "pointer",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Ver Playlist Completa
+                    </span>
+                  </CCardBody>
+                </div>
+              </CCard>
+              // </div>
+            ))}
+          </div>
+        </div>
         <CRow>
           <CCol sm="12">
             {state.videos.map((item, index) => (
@@ -312,13 +356,13 @@ const Search = ({ user }) => {
                     onClick={() => handleClick("view", item.id)}
                     style={{
                       height: "150px",
-                      weigth: "264px",
+                      width: "15%",
                       cursor: "pointer",
                       float: "left",
                       marginRight: "1%",
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
-                      objectFit: "fill"
+                      // objectFit: "fill",
                     }}
                     src={API_URL + "images/getImage/" + item.id}
                   />
@@ -329,7 +373,7 @@ const Search = ({ user }) => {
                         onClick={() => handleClick("view", item.id)}
                       >
                         {item.title.length <= 103
-                          ? item.name
+                          ? item.title
                           : item.title.substring(0, 100) + "..."}
                       </h5>
                       <span
@@ -344,7 +388,7 @@ const Search = ({ user }) => {
                     </CCardText>
                     <CCardText
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() => handleClick("channel", item.channel_id)}
                     >
                       <CCardBody
                         className=" float-left"
@@ -353,8 +397,12 @@ const Search = ({ user }) => {
                         <div className="c-avatar">
                           <CImg
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("channel", item.channel_id)}
-                            src={API_URL + "images/getAvatar/" + item.channel_id}
+                            onClick={() =>
+                              handleClick("channel", item.channel_id)
+                            }
+                            src={
+                              API_URL + "images/getAvatar/" + item.channel_id
+                            }
                             className="c-avatar-img"
                             alt="admin@bootstrapmaster.com"
                           />
@@ -369,7 +417,9 @@ const Search = ({ user }) => {
                         </span>
                       </CCardBody>
                       <div className="float-left">
-                        {item.description.substring(0, 60) + "..."}
+                        {item.description.length <= 63
+                          ? item.description
+                          : item.description.substring(0, 60) + "..."}
                       </div>
                     </CCardText>{" "}
                   </CCardText>

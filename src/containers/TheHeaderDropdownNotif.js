@@ -24,6 +24,7 @@ const TheHeaderDropdownNotif = ({ user }) => {
     nots: [],
     itemsCount: 0,
     fetched: false,
+    emoji: "¯\\_(ツ)_/¯",
   });
 
   const handleClick = (route, id) => {
@@ -82,6 +83,62 @@ const TheHeaderDropdownNotif = ({ user }) => {
         <CDropdownItem header tag="div" color="dark">
           <strong style={{ color: "white" }}>Notificações</strong>
         </CDropdownItem>
+        {state.nots.length === 0 && (
+          <CDropdownItem>
+            <div className="message">
+              <div className="pt-2 mr-2 float-left">
+                <div
+                  style={{
+                    verticalAlign: "center",
+                    display: "flex",
+                    height: "100%",
+                  }}
+                >
+                  <div className="c-avatar">
+                    &nbsp;
+                    <CImg
+                      src="https://cdn.discordapp.com/attachments/300483456440336385/844601759464685638/default.png"
+                      className="c-avatar-img"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    width: "300px",
+                    height: "100px",
+                    verticalAlign: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      textAlign: "center",
+                      fontSize: "60px",
+                      width: "100%",
+                    }}
+                  >
+                    {state.emoji}
+                  </p>
+
+                  <div className="small text-muted text-truncate">
+                    {diffDate(new Date(), new Date())}
+                  </div>
+                </div>
+                <div className="ml-1   float-right" style={{ width: "27%" }}>
+                  <div style={{ width: "100%" }}>
+                    &nbsp;
+                    <CImg
+                      src="https://cdn.discordapp.com/attachments/300483456440336385/844602106858045440/banner_3.png"
+                      style={{ width: "150px", height: "120px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CDropdownItem>
+        )}
+
         {state.nots.map((item, index) => (
           <CDropdownItem onClick={() => handleClick("view", item.video_id)}>
             {item.type === "like_comment" && (
@@ -102,15 +159,21 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
+                      &nbsp;
                       <CImg src={item.avatar} className="c-avatar-img" />
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "90%", height: "100%" }}>
-                    <p style={{ wordBreak: "break-word", width: "90%" }}>
+                  <div style={{ width: "400px", height: "100%" }}>
+                    <p
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                      }}
+                    >
                       {item.name}
-                      {' marcou seu comentário com "Gostei": '}"{item.text}"
+                      {'"Curtiu" seu comentário: '}"{item.text}"
                     </p>
 
                     <div className="small text-muted text-truncate">
@@ -119,9 +182,10 @@ const TheHeaderDropdownNotif = ({ user }) => {
                   </div>
                   <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
+                      &nbsp;
                       <CImg
                         src={API_URL + "images/getImage/" + item.video_id}
-                        style={{ width: "100%", height: "70px" }}
+                        style={{ width: "100px", height: "80px" }}
                       />
                     </div>
                   </div>
@@ -146,25 +210,34 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
+                      &nbsp;
                       <CImg src={item.avatar} className="c-avatar-img" />
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "90%" }}>
-                    <p>
+                  <div style={{ width: "400px", height: "100%" }}>
+                    <p
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                      }}
+                    >
                       {item.name}
-                      {" comentou no seu comentário: "}"{item.text}"
+                      {" comentou no seu comentário: "}
+                      {item.text}
                     </p>
+
                     <div className="small text-muted text-truncate">
                       {diffDate(new Date(), item.date)}
                     </div>
                   </div>
-                  <div className=" ml-1 float-right" style={{ width: "27%" }}>
+                  <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
+                      &nbsp;
                       <CImg
-                        src={API_URL + "/images/getImage/" + item.video_id}
-                        style={{ width: "100%", height: "70px" }}
+                        src={API_URL + "images/getImage/" + item.video_id}
+                        style={{ width: "100px", height: "80px" }}
                       />
                     </div>
                   </div>
@@ -189,29 +262,38 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     )}
 
                     <div className="c-avatar">
+                      &nbsp;
                       <CImg
-                        src={API_URL + "/images/getImage/" + item.video_id}
+                        style={{ float: "right" }}
+                        src={API_URL + "images/getAvatar/" + item.user_id}
                         className="c-avatar-img"
                       />
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "90%" }}>
-                    <p>
+                  <div style={{ width: "400px", height: "100%" }}>
+                    <p
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                      }}
+                    >
                       {item.name}
-                      {" enviou o video "}
+                      {" Enviou seu novo vídeo: "}
                       {item.text}
                     </p>
+
                     <div className="small text-muted text-truncate">
                       {diffDate(new Date(), item.date)}
                     </div>
                   </div>
-                  <div className=" ml-1 float-right" style={{ width: "27%" }}>
+                  <div className="ml-1   float-right" style={{ width: "27%" }}>
                     <div style={{ width: "100%" }}>
+                      &nbsp;
                       <CImg
-                        src={API_URL + "/images/getImage/" + item.video_id}
-                        style={{ width: "100%", height: "70px" }}
+                        src={API_URL + "images/getImage/" + item.video_id}
+                        style={{ width: "100px", height: "80px" }}
                       />
                     </div>
                   </div>

@@ -117,7 +117,10 @@ const HistVideo = ({ user }) => {
                           {item.title}
                           {/* {item.title.substring(0, 100) + "..."} */}
                         </h5>
-                        <span onClick={() => handleClick("channel", item.c_id)}>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleClick("channel", item.c_id)}
+                        >
                           {item.channel}
                         </span>
                         <span

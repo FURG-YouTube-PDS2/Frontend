@@ -137,6 +137,7 @@ const Profile = ({ user }) => {
                 label: "Sim",
                 onClick: () => {
                   history.push("/profile");
+                  window.location.reload();
                 },
               },
               {

@@ -1,10 +1,12 @@
 //REACT
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
+
 //CoreUI
 import {
   CLink,
@@ -102,9 +104,12 @@ const StackVideo = ({ user }) => {
                           style={{ cursor: "pointer" }}
                           onClick={() => handleClick("view", item.id)}
                         >
-                          {item.title.substring(0, 100) + "..."}
+                          {item.title.length <= 103
+                            ? item.title
+                            : item.title.substring(0, 100) + "..."}
                         </h5>
                         <span
+                          style={{ cursor: "pointer" }}
                           onClick={() =>
                             handleClick("channel", item.channel_id)
                           }
@@ -143,4 +148,7 @@ const StackVideo = ({ user }) => {
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(StackVideo));

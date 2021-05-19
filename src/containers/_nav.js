@@ -41,7 +41,7 @@ export default [
   {
     _tag: "CSidebarNavItem",
     name: "Histórico",
-    to: "/historic",
+    to: "/history",
     icon: "cib-youtube",
   },
   // {
